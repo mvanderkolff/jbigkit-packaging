@@ -1,0 +1,52 @@
+Subject: Correct the Makefile for the binaries build
+Author: Michael van der Kolff <mvanderkolff@gmail.com>
+Forwarded: no
+
+Upstream Makefile is barebones, and doesn't make any shared libraries.
+
+This corrects the pbmtools part (jbig <-> pbm tools) so that they
+use the shared libraries.
+--- a/pbmtools/Makefile
++++ b/pbmtools/Makefile
+@@ -6,23 +6,23 @@
+ 
+ # Options for the compiler
+ CFLAGS = -g -Wall -ansi -pedantic -I../libjbig # --coverage
+-
++.PHONY: all test test82 test85
+ .SUFFIXES: .1 .5 .txt $(SUFFIXES)
+ 
+ all: pbmtojbg jbgtopbm pbmtojbg85 jbgtopbm85 \
+ 	pbmtojbg.txt jbgtopbm.txt pbm.txt pgm.txt
+ 
+ pbmtojbg: pbmtojbg.o ../libjbig/libjbig.a
+-	$(CC) $(CFLAGS) -o pbmtojbg pbmtojbg.o -L../libjbig -ljbig
++	$(CC) $(CFLAGS) -o pbmtojbg pbmtojbg.o -L../libjbig/.libs -ljbig
+ 
+ jbgtopbm: jbgtopbm.o ../libjbig/libjbig.a
+-	$(CC) $(CFLAGS) -o jbgtopbm jbgtopbm.o -L../libjbig -ljbig
++	$(CC) $(CFLAGS) -o jbgtopbm jbgtopbm.o -L../libjbig/.libs -ljbig
+ 
+-pbmtojbg85: pbmtojbg85.o ../libjbig/libjbig85.a
+-	$(CC) $(CFLAGS) -o pbmtojbg85 pbmtojbg85.o -L../libjbig -ljbig85
++pbmtojbg85: pbmtojbg85.o ../libjbig/libjbig.a
++	$(CC) $(CFLAGS) -o pbmtojbg85 pbmtojbg85.o -L../libjbig/.libs -ljbig
+ 
+-jbgtopbm85: jbgtopbm85.o ../libjbig/libjbig85.a
+-	$(CC) $(CFLAGS) -o jbgtopbm85 jbgtopbm85.o -L../libjbig -ljbig85
++jbgtopbm85: jbgtopbm85.o ../libjbig/libjbig.a
++	$(CC) $(CFLAGS) -o jbgtopbm85 jbgtopbm85.o -L../libjbig/.libs -ljbig
+ 
+ jbgtopbm.o: jbgtopbm.c ../libjbig/jbig.h
+ pbmtojbg.o: pbmtojbg.c ../libjbig/jbig.h
+@@ -33,10 +33,6 @@
+ 	../libjbig/jbig_ar.c ../libjbig/jbig_ar.h
+ 	make -C ../libjbig libjbig.a
+ 
+-../libjbig/libjbig85.a: ../libjbig/jbig85.c ../libjbig/jbig85.h \
+-	../libjbig/jbig_ar.c ../libjbig/jbig_ar.h
+-	make -C ../libjbig libjbig85.a
+-
+ test: test82 test85
+ 
+ test82: pbmtojbg jbgtopbm

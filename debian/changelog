@@ -1,0 +1,6 @@
+jbigkit (2.0-1) unstable; urgency=low
+
+  * Wipe out history for first release
+  * Closes: #656413
+
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Thu, 19 Jan 2012 20:19:54 +1100

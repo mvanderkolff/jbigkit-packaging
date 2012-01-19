@@ -1,0 +1,9 @@
+jbigkit for Debian
+------------------
+
+The Makefiles have been modified to use libtool and generate shared objects.  Furthermore, a binary-incompatible change has been made - I just generate libjbig, not libjbig and libjbig85.
+
+The patches are in quilt format.
+
+
+
