@@ -1,6 +1,10 @@
 jbigkit (2.0-1) unstable; urgency=low
 
+  [ Michael van der Kolff ]
   * Wipe out history for first release
   * Closes: #656413
 
- -- Michael van der Kolff <mvanderkolff@gmail.com>  Thu, 19 Jan 2012 20:19:54 +1100
+  [ Michael van der Kolff ]
+  * Edit control so as to indicate use of Git
+
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Fri, 06 Apr 2012 07:05:15 +1000

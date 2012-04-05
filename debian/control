@@ -5,6 +5,8 @@ Build-Depends: debhelper (>= 7.0.50~), libtool
 Standards-Version: 3.9.2
 Section: libs
 Homepage: http://www.cl.cam.ac.uk/~mgk25/jbigkit/
+Vcs-Git: git://github.com/mvanderkolff/jbigkit-packaging.git
+Vcs-Browser: https://github.com/mvanderkolff/jbigkit-packaging
 
 Package: jbigkit-bin
 Section: graphics
