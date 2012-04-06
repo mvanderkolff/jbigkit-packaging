@@ -7,30 +7,29 @@ CC = gcc
 # Options for the compiler: A high optimization level is suggested
 CFLAGS = -g -O -Wall -ansi -pedantic # --coverage
 
-.PHONY: all clean test
+all: libjbig.a tstcodec tstcodec85
 
-%.lo %.o: %.c
-	libtool --mode=compile $(CC) $(CFLAGS) -c $<
-
-all: libjbig.la
-
-tstcodec: tstcodec.o libjbig.a
+tstcodec: tstcodec.o jbig.o jbig_ar.o
 	$(CC) $(CFLAGS) -o tstcodec $+
 
-tstcodec85: tstcodec85.o libjbig.a
+tstcodec85: tstcodec85.o jbig85.o jbig_ar.o
 	$(CC) $(CFLAGS) -o tstcodec85 $+
 
-libjbig.a: libjbig.la
-	cp .libs/libjbig.a .
+libjbig.a: jbig.o jbig_ar.o
+	rm -f libjbig.a
+	ar rc libjbig.a jbig.o jbig_ar.o
+	-ranlib libjbig.a
 
-libjbig.la: jbig.lo jbig_ar.lo jbig85.lo
-	libtool --mode=link $(CC) -o libjbig.la $+ -rpath /usr/lib
+libjbig85.a: jbig85.o jbig_ar.o
+	rm -f libjbig85.a
+	ar rc libjbig85.a jbig85.o jbig_ar.o
+	-ranlib libjbig85.a
 
-jbig.lo: jbig.c jbig.h jbig_ar.h
-jbig85.lo: jbig85.c jbig85.h jbig_ar.h
-jbig_ar.lo: jbig_ar.c jbig_ar.h
-tstcodec.o: tstcodec.c libjbig.a
-tstcodec85.o: tstcodec85.c libjbig.a
+jbig.o: jbig.c jbig.h jbig_ar.h
+jbig85.o: jbig85.c jbig85.h jbig_ar.h
+jbig_ar.o: jbig_ar.c jbig_ar.h
+tstcodec.o: tstcodec.c jbig.h
+tstcodec85.o: tstcodec85.c jbig85.h
 
 jbig.pot: jbig.c
 	xgettext -o$@ -k_ \
@@ -45,6 +44,5 @@ t82test.pbm: tstcodec
 	./tstcodec $@
 
 clean:
-	rm -rf .libs
-	rm -f *.gcda *.gcno *.gcov *.a *.la *.o *.lo *~ core gmon.out dbg_d\=??.pbm t82test.pbm
+	rm -f *.{o,gcda,gcno,gcov} *~ core gmon.out dbg_d\=??.pbm t82test.pbm
 	rm -f tstcodec tstcodec85

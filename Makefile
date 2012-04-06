@@ -11,9 +11,9 @@ CCFLAGS = -O2 -W
 CFLAGS = $(CCFLAGS) -I../libjbig
 
 VERSION=2.0
-.PHONY: all lib pbm test clean install
 
 all: lib pbm
+	@echo "Enter 'make test' in order to start some automatic tests."
 
 lib:
 	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)")
@@ -22,23 +22,17 @@ pbm: lib
 	(cd pbmtools; make "CC=$(CC)" "CFLAGS=$(CFLAGS)")
 
 test: lib pbm
-#	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
-#	(cd pbmtools; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
+	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
+	(cd pbmtools; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
 
 clean:
 	rm -f *~ core
 	(cd libjbig; make clean)
 	(cd pbmtools; make clean)
 
-install: all
-	install -d $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
-	install -s -m 644 libjbig/.libs/*.so.*.*.* libjbig/.libs/*.a $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
-	install -m 644 libjbig/.libs/*.la $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
-	/sbin/ldconfig -n $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
-	ln -s libjbig.so.0.0 $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libjbig.so
-	install -d $(DESTDIR)/usr/include
-	install -m 644 libjbig/*.h $(DESTDIR)/usr/include
-	install -d $(DESTDIR)/usr/bin
-	install -s -m 755 pbmtools/jbgtopbm pbmtools/jbgtopbm85 pbmtools/pbmtojbg pbmtools/pbmtojbg85 $(DESTDIR)/usr/bin
-	install -d $(DESTDIR)/usr/share/man/man1
-	install -m 644 pbmtools/*.1 $(DESTDIR)/usr/share/man/man1
+distribution: clean
+	rm -f libjbig/libjbig*.a
+	(cd ..; tar -c -v --exclude .svn -f jbigkit-$(VERSION).tar jbigkit ; \
+	  gzip -9f jbigkit-$(VERSION).tar )
+	scp ../jbigkit-$(VERSION).tar.gz slogin-serv1.cl.cam.ac.uk:public_html/download/
+	scp CHANGES slogin-serv1.cl.cam.ac.uk:public_html/jbigkit/
