@@ -39,11 +39,11 @@ With some extra effort, this does.
 -	scp ../jbigkit-$(VERSION).tar.gz slogin-serv1.cl.cam.ac.uk:public_html/download/
 -	scp CHANGES slogin-serv1.cl.cam.ac.uk:public_html/jbigkit/
 +install: all
-+	install -d $(DESTDIR)/usr/lib
-+	install -s -m 644 libjbig/.libs/*.so.*.*.* libjbig/.libs/*.a $(DESTDIR)/usr/lib
-+	install -m 644 libjbig/.libs/*.la $(DESTDIR)/usr/lib
-+	/sbin/ldconfig -n $(DESTDIR)/usr/lib
-+	ln -s $(DESTDIR)/usr/lib/libjbig.so.*.* $(DESTDIR)/usr/lib/libjbig.so
++	install -d $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
++	install -s -m 644 libjbig/.libs/*.so.*.*.* libjbig/.libs/*.a $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
++	install -m 644 libjbig/.libs/*.la $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
++	/sbin/ldconfig -n $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
++	ln -s /usr/lib/$(DEB_HOST_MULTIARCH)/libjbig.so.0.0
 +	install -d $(DESTDIR)/usr/include
 +	install -m 644 libjbig/*.h $(DESTDIR)/usr/include
 +	install -d $(DESTDIR)/usr/bin
