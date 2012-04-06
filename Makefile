@@ -35,7 +35,7 @@ install: all
 	install -s -m 644 libjbig/.libs/*.so.*.*.* libjbig/.libs/*.a $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
 	install -m 644 libjbig/.libs/*.la $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
 	/sbin/ldconfig -n $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
-	ln -s /usr/lib/$(DEB_HOST_MULTIARCH)/libjbig.so.0.0
+	ln -s libjbig.so.0.0 $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)/libjbig.so
 	install -d $(DESTDIR)/usr/include
 	install -m 644 libjbig/*.h $(DESTDIR)/usr/include
 	install -d $(DESTDIR)/usr/bin
