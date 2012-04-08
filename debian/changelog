@@ -1,3 +1,10 @@
+jbigkit (2.0-3) UNRELEASED; urgency=low
+
+  [ Michael van der Kolff ]
+  * Readd test target per Mathieu Malaterre's comments
+
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun, 08 Apr 2012 18:05:51 +1000
+
 jbigkit (2.0-2) unstable; urgency=low
 
   * Correct typo in new Makefile, so that libjbig.so now points to a file that exists (Closes: #667927)
