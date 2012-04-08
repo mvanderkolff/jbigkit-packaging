@@ -18,17 +18,7 @@ With some extra effort, this does.
  
  lib:
  	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)")
-@@ -22,17 +22,23 @@
- 	(cd pbmtools; make "CC=$(CC)" "CFLAGS=$(CFLAGS)")
- 
- test: lib pbm
--	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
--	(cd pbmtools; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
-+#	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
-+#	(cd pbmtools; make "CC=$(CC)" "CFLAGS=$(CFLAGS)" test)
- 
- clean:
- 	rm -f *~ core
+@@ -30,9 +30,15 @@
  	(cd libjbig; make clean)
  	(cd pbmtools; make clean)
  
