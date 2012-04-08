@@ -8,11 +8,12 @@ This corrects the pbmtools part (jbig <-> pbm tools) so that they
 use the shared libraries.
 --- a/pbmtools/Makefile
 +++ b/pbmtools/Makefile
-@@ -6,23 +6,23 @@
+@@ -6,23 +6,25 @@
  
  # Options for the compiler
  CFLAGS = -g -Wall -ansi -pedantic -I../libjbig # --coverage
--
++export LD_LIBRARY_PATH = ../libjbig/.libs
+ 
 +.PHONY: all test test82 test85
  .SUFFIXES: .1 .5 .txt $(SUFFIXES)
  
@@ -39,7 +40,7 @@ use the shared libraries.
  
  jbgtopbm.o: jbgtopbm.c ../libjbig/jbig.h
  pbmtojbg.o: pbmtojbg.c ../libjbig/jbig.h
-@@ -33,10 +33,6 @@
+@@ -33,10 +35,6 @@
  	../libjbig/jbig_ar.c ../libjbig/jbig_ar.h
  	make -C ../libjbig libjbig.a
  
@@ -50,3 +51,12 @@ use the shared libraries.
  test: test82 test85
  
  test82: pbmtojbg jbgtopbm
+@@ -91,6 +89,8 @@
+ 	cmp test-$(IMG).pgm ../examples/$(IMG).pgm
+ 
+ test85: pbmtojbg jbgtopbm pbmtojbg85 jbgtopbm85 test-t82.pbm
++	export LD_LIBRARY_PATH=`pwd`/../libjbig/.libs
++	echo $(LD_LIBRARY_PATH)
+ 	make IMG=t82 "OPTIONSP=-p 0"      dotest85
+ 	make IMG=t82 "OPTIONSP=-p 8"      dotest85
+ 	make IMG=t82 "OPTIONSP=-p 8 -r"   dotest85b
