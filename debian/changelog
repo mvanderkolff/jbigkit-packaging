@@ -1,9 +1,10 @@
 jbigkit (2.0-2) unstable; urgency=low
 
-  [ Michael van der Kolff ]
-  * Correct typo in new Makefile, so that libjbig.so now points to a file that exists (Closes: #667927)
+  * Correct typo in new Makefile, so that libjbig.so now points to a file
+    that exists (Closes: #667927)
   * Readd test target per Mathieu Malaterre's comments
-  * Make test target work by forcing it to search the directory where the library was built.
+  * Make test target work by forcing it to search the directory where the
+    library was built.
 
  -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun, 08 Apr 2012 19:12:41 +1000
 
