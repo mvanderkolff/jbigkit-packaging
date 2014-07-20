@@ -1,1 +1,3 @@
-0001-Update-patches-for-new-upstream.patch
+allNewMainMakefile.diff
+pbmtoolsMakefile.diff
+useLibtool.diff
