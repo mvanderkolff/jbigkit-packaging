@@ -49,11 +49,11 @@ DESCRIPTION
        0 1 0 0 0 0 0 1 1 1 1 0 0 1 1 1 1 0 0 1 0 0 0 0
        0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 
-       Programs  that  read  this  format  should  be  as lenient as possible,
+       Programs that read this  format  should  be  as  lenient  as  possible,
        accepting anything that looks remotely like a bitmap.
 
        There is also a variant on the format, available by setting the RAWBITS
-       option  at  compile  time.   This variant is different in the following
+       option at compile time.  This variant is  different  in  the  following
        ways:
 
        - The "magic number" is "P4" instead of "P1".
@@ -61,20 +61,20 @@ DESCRIPTION
        - The bits are stored eight per byte, high bit first low bit last.
 
        - No whitespace is allowed in the bits section, and only a single char-
-         acter  of  whitespace  (typically  a  newline)  is  allowed after the
+         acter of whitespace  (typically  a  newline)  is  allowed  after  the
          height.
 
-       - The files are eight times smaller and many times faster to  read  and
+       - The  files  are eight times smaller and many times faster to read and
          write.
 
 SEE ALSO
        atktopbm(1),  brushtopbm(1),  cmuwmtopbm(1),  g3topbm(1),  gemtopbm(1),
        icontopbm(1), macptopbm(1), mgrtopbm(1), pi3topbm(1), xbmtopbm(1), ybm-
-       topbm(1),  pbmto10x(1), pnmtoascii(1), pbmtoatk(1), pbmtobbnbg(1), pbm-
-       tocmuwm(1), pbmtoepson(1), pbmtog3(1), pbmtogem(1), pbmtogo(1),  pbmto-
-       icon(1),  pbmtolj(1),  pbmtomacp(1),  pbmtomgr(1),  pbmtopi3(1), pbmto-
-       plot(1), pbmtoptx(1), pbmtox10bm(1), pbmtoxbm(1), pbmtoybm(1),  pbmtoz-
-       inc(1),  pbmlife(1),  pbmmake(1), pbmmask(1), pbmreduce(1), pbmtext(1),
+       topbm(1), pbmto10x(1), pnmtoascii(1), pbmtoatk(1), pbmtobbnbg(1),  pbm-
+       tocmuwm(1),  pbmtoepson(1), pbmtog3(1), pbmtogem(1), pbmtogo(1), pbmto-
+       icon(1), pbmtolj(1),  pbmtomacp(1),  pbmtomgr(1),  pbmtopi3(1),  pbmto-
+       plot(1),  pbmtoptx(1), pbmtox10bm(1), pbmtoxbm(1), pbmtoybm(1), pbmtoz-
+       inc(1), pbmlife(1), pbmmake(1), pbmmask(1),  pbmreduce(1),  pbmtext(1),
        pbmupc(1), pnm(5), pgm(5), ppm(5)
 
 AUTHOR

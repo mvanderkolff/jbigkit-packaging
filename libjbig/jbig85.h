@@ -2,9 +2,7 @@
  *  Header file for the T.85 "light" version of the portable
  *  JBIG image compression library
  *
- *  Copyright 1995-2008 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
- *
- *  $Id: jbig85.h 1303 2008-08-30 20:16:20Z mgk25 $
+ *  Copyright 1995-2014 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
  */
 
 #ifndef JBG85_H
@@ -17,7 +15,9 @@
  * JBIG-KIT version number
  */
 
-#define JBG85_VERSION    "2.0"
+#define JBG85_VERSION    "2.1"
+#define JBG85_VERSION_MAJOR 2
+#define JBG85_VERSION_MINOR 1
 
 /*
  * JBIG-KIT licence agreement reference code:

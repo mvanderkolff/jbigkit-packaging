@@ -1,9 +1,7 @@
 /*
  *  Portable JBIG image compression library
  *
- *  Copyright 1995-2007 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
- *
- *  $Id: jbig.c 1297 2008-08-27 19:18:37Z mgk25 $
+ *  Copyright 1995-2014 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
  *
  *  This module implements a portable standard C encoder and decoder
  *  using the JBIG1 lossless bi-level image compression algorithm
@@ -27,15 +25,6 @@
  * 
  *  If you want to use this program under different license conditions,
  *  then contact the author for an arrangement.
- *
- *  It is possible that certain products which can be built using this
- *  software module might form inventions protected by patent rights in
- *  some countries (e.g., by patents about arithmetic coding algorithms
- *  owned by IBM and AT&T in the USA). Provision of this software by the
- *  author does NOT include any licences for any patents. In those
- *  countries where a patent licence is required for certain applications
- *  of this software module, you will have to obtain such a licence
- *  yourself.
  */
 
 #ifdef DEBUG
@@ -80,12 +69,11 @@
 /* object code version id */
 
 const char jbg_version[] = 
-  "JBIG-KIT " JBG_VERSION " -- (c) 1995-2008 Markus Kuhn -- "
-  "Licence: " JBG_LICENCE "\n"
-  "$Id: jbig.c 1297 2008-08-27 19:18:37Z mgk25 $ ";
+  "JBIG-KIT " JBG_VERSION " -- (c) 1995-2014 Markus Kuhn -- "
+  "Licence: " JBG_LICENCE "\n";
 
 /*
- * the following array specifies for each combination of the 3
+ * The following array specifies for each combination of the 3
  * ordering bits, which ii[] variable represents which dimension
  * of s->sde.
  */
@@ -825,7 +813,7 @@ void jbg_enc_init(struct jbg_enc_state *s, unsigned long x, unsigned long y,
   s->tx = (int *) checked_malloc(s->planes, sizeof(int));
   lx = jbg_ceil_half(x, 1);
   s->tp = (char *) checked_malloc(lx, sizeof(char));
-  for (l = 0; l < lx; s->tp[l++] = 2);
+  for (l = 0; l < lx; s->tp[l++] = 2) ;
   s->sde = NULL;
 
   return;
@@ -1000,9 +988,9 @@ static void encode_sde(struct jbg_enc_state *s,
     p1 = hp - hbpl;
     if (y > 1) {
       q1 = p1 - hbpl;
-      while (p1 < hp && (ltp_old = (*p1++ == *q1++)) != 0);
+      while (p1 < hp && (ltp_old = (*p1++ == *q1++)) != 0) ;
     } else
-      while (p1 < hp && (ltp_old = (*p1++ == 0)) != 0);
+      while (p1 < hp && (ltp_old = (*p1++ == 0)) != 0) ;
   }
 
   if (layer == 0) {
@@ -1054,9 +1042,9 @@ static void encode_sde(struct jbg_enc_state *s,
 	p1 = hp;
 	if (i > 0 || !reset) {
 	  q1 = hp - hbpl;
-	  while (q1 < hp && (ltp = (*p1++ == *q1++)) != 0);
+	  while (q1 < hp && (ltp = (*p1++ == *q1++)) != 0) ;
 	} else
-	  while (p1 < hp + hbpl && (ltp = (*p1++ == 0)) != 0);
+	  while (p1 < hp + hbpl && (ltp = (*p1++ == 0)) != 0) ;
 	arith_encode(se, (s->options & JBG_LRLTWO) ? TPB2CX : TPB3CX,
 		     ltp == ltp_old);
 #ifdef DEBUG
@@ -1742,12 +1730,12 @@ void jbg_int2dppriv(unsigned char *dptable, const char *internal)
   int trans2[11] = { 1, 0, 3, 2, 10, 9, 8, 7, 6, 5, 4 };
   int trans3[12] = { 1, 0, 3, 2, 11, 10, 9, 8, 7, 6, 5, 4 };
   
-  for (i = 0; i < 1728; dptable[i++] = 0);
+  for (i = 0; i < 1728; dptable[i++] = 0) ;
 
 #define FILL_TABLE1(offset, len, trans) \
   for (i = 0; i < len; i++) { \
     k = 0; \
-    for (j = 0; j < 8; j++) \
+    for (j = 0; i >> j; j++) \
       k |= ((i >> j) & 1) << trans[j]; \
     dptable[(i + offset) >> 2] |= \
       (internal[k + offset] & 3) << ((3 - (i&3)) << 1); \
@@ -1778,7 +1766,7 @@ void jbg_dppriv2int(char *internal, const unsigned char *dptable)
 #define FILL_TABLE2(offset, len, trans) \
   for (i = 0; i < len; i++) { \
     k = 0; \
-    for (j = 0; j < 8; j++) \
+    for (j = 0; i >> j; j++) \
       k |= ((i >> j) & 1) << trans[j]; \
     internal[k + offset] = \
       (dptable[(i + offset) >> 2] >> ((3 - (i & 3)) << 1)) & 3; \
@@ -2090,8 +2078,8 @@ void jbg_dec_maxsize(struct jbg_dec_state *s, unsigned long xmax,
  * Decode the new len PSDC bytes to which data points and add them to
  * the current stripe. Return the number of bytes which have actually
  * been read (this will be less than len if a marker segment was 
- * part of the data or if the final byte was 0xff were this code
- * can not determine, whether we have a marker segment.
+ * part of the data or if the final byte was 0xff, in which case
+ * this code cannot determine whether we have a marker segment).
  */
 static size_t decode_pscd(struct jbg_dec_state *s, unsigned char *data,
 			  size_t len)
@@ -2583,6 +2571,7 @@ int jbg_dec_in(struct jbg_dec_state *s, unsigned char *data, size_t len,
   unsigned long x, y;
   unsigned long is[3], ie[3];
   size_t dummy_cnt;
+  unsigned char *dppriv;
 
   if (!cnt) cnt = &dummy_cnt;
   *cnt = 0;
@@ -2720,13 +2709,16 @@ int jbg_dec_in(struct jbg_dec_state *s, unsigned char *data, size_t len,
       (s->options & (JBG_DPON | JBG_DPPRIV | JBG_DPLAST)) ==
       (JBG_DPON | JBG_DPPRIV)) {
     assert(s->bie_len >= 20);
-    while (s->bie_len < 20 + 1728 && *cnt < len)
-      s->buffer[s->bie_len++ - 20] = data[(*cnt)++];
-    if (s->bie_len < 20 + 1728) 
-      return JBG_EAGAIN;
     if (!s->dppriv || s->dppriv == jbg_dptable)
       s->dppriv = (char *) checked_malloc(1728, sizeof(char));
-    jbg_dppriv2int(s->dppriv, s->buffer);
+    while (s->bie_len < 20 + 1728 && *cnt < len)
+      s->dppriv[s->bie_len++ - 20] = data[(*cnt)++];
+    if (s->bie_len < 20 + 1728) 
+      return JBG_EAGAIN;
+    dppriv = (unsigned char *) s->dppriv;
+    s->dppriv = (char *) checked_malloc(6912, sizeof(char));
+    jbg_dppriv2int(s->dppriv, dppriv);
+    checked_free(dppriv);
   }
 
   /*
@@ -2855,7 +2847,7 @@ int jbg_dec_in(struct jbg_dec_state *s, unsigned char *data, size_t len,
 	if (j) {
 #ifdef DEBUG
 	  fprintf(stderr, "This was the final SDE in this BIE, "
-		  "%d bytes left.\n", len - *cnt);
+		  "%ld bytes left.\n", (long) (len - *cnt));
 #endif
 	  s->bie_len = 0;
 	  return JBG_EOK;
@@ -3120,7 +3112,6 @@ void jbg_dec_merge_planes(const struct jbg_dec_state *s, int use_graycode,
 					   void *file), void *file)
 {
 #define BUFLEN 4096
-  int bpp;
   unsigned long bpl, line, i;
   unsigned k = 8;
   int p;
@@ -3137,7 +3128,6 @@ void jbg_dec_merge_planes(const struct jbg_dec_state *s, int use_graycode,
   y = jbg_dec_getheight(s);
   if (x == 0 || y == 0)
     return;
-  bpp = (s->planes + 7) / 8;   /* bytes per pixel in dest image */
   bpl = jbg_ceil_half(x, 3);   /* bytes per line in src plane */
 
   if (iindex[s->order & 7][LAYER] == 0)
@@ -3261,6 +3251,7 @@ int jbg_newlen(unsigned char *bie, size_t len)
 {
   unsigned char *p = bie + 20;
   int i;
+  unsigned long y, yn;
 
   if (len < 20)
     return JBG_EAGAIN;
@@ -3276,6 +3267,11 @@ int jbg_newlen(unsigned char *bie, size_t len)
     else if (p[0] == MARKER_ESC)
       switch (p[1]) {
       case MARKER_NEWLEN:
+	y = (((long) bie[ 8] << 24) | ((long) bie[ 9] << 16) |
+	     ((long) bie[10] <<  8) |  (long) bie[11]);
+	yn = (((long) p[2] << 24) | ((long) p[3] << 16) |
+	      ((long) p[4] <<  8) |  (long) p[5]);
+	if (yn > y) return JBG_EINVAL | 12;
 	/* overwrite YD in BIH with YD from NEWLEN */
 	for (i = 0; i < 4; i++) {
 	  bie[8+i] = p[2+i];

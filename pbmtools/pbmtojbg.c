@@ -2,8 +2,6 @@
  *  pbmtojbg - Portable Bitmap to JBIG converter
  *
  *  Markus Kuhn - http://www.cl.cam.ac.uk/~mgk25/jbigkit/
- *
- *  $Id: pbmtojbg.c 1278 2008-07-16 18:46:54Z mgk25 $
  */
 
 #include <stdio.h>
@@ -274,7 +272,7 @@ int main (int argc, char **argv)
     max = getint(fin);
   else
     max = 1;
-  for (planes = 0, v = max; v; planes++, v >>= 1);
+  for (planes = 0, v = max; v; planes++, v >>= 1) ;
   bpp = (planes + 7) / 8;
   if (encode_planes < 0 || encode_planes > planes)
     encode_planes = planes;
