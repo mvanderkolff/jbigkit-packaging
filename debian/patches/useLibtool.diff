@@ -41,7 +41,7 @@ index f2898f5..8b1f446 100644
 +	cp .libs/libjbig.a .
 +
 +libjbig.la: jbig.lo jbig_ar.lo jbig85.lo
-+	libtool --mode=link $(CC) -o libjbig.la $+ -rpath /usr/lib
++	libtool --mode=link $(CC) $(LDFLAGS) -o libjbig.la $+ -rpath /usr/lib
 +
 +jbig.lo: jbig.c jbig.h jbig_ar.h
 +jbig85.lo: jbig85.c jbig85.h jbig_ar.h
