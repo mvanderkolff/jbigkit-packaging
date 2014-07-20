@@ -1,7 +1,7 @@
 Source: jbigkit
 Priority: extra
 Maintainer: Michael van der Kolff <mvanderkolff@gmail.com>
-Build-Depends: debhelper (>=8.1.3), libtool
+Build-Depends: debhelper (>=8.1.3), libtool, hardening-wrapper
 Standards-Version: 3.9.5
 Section: libs
 Homepage: http://www.cl.cam.ac.uk/~mgk25/jbigkit/
