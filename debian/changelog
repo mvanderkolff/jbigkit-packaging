@@ -1,3 +1,20 @@
+jbigkit (2.1-1) UNRELEASED; urgency=medium
+
+  [ Michael van der Kolff ]
+  * Tag for new release
+
+  [ Mathieu Malaterre ]
+  * fix lintian warning about d/changelog tweak README.source
+
+  [ Michael van der Kolff ]
+  * Closes: #754344 (Thanks: Steve Langasek <steve.langasek@canonical.com>)
+  * Update watch location
+  * Imported Upstream version 2.1
+
+  [ mvanderkolff ]
+
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun, 20 Jul 2014 20:45:41 +1000
+
 jbigkit (2.0-2) unstable; urgency=low
 
   * Correct typo in new Makefile, so that libjbig.so now points to a file
