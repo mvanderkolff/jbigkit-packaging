@@ -1,5 +1,5 @@
 Source: jbigkit
-Priority: extra
+Priority: optional
 Maintainer: Michael van der Kolff <mvanderkolff@gmail.com>
 Build-Depends: debhelper (>=8.1.3), libtool
 Standards-Version: 3.9.5
