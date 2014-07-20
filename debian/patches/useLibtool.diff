@@ -5,7 +5,7 @@ index f2898f5..8b1f446 100644
 @@ -7,28 +7,30 @@ CC = gcc
  CFLAGS = -g -O -W -Wall -ansi -pedantic # --coverage
  
- all: libjbig.a libjbig85.a tstcodec tstcodec85
+-all: libjbig.a libjbig85.a tstcodec tstcodec85
 +.PHONY: all clean test
  
 -tstcodec: tstcodec.o jbig.o jbig_ar.o
