@@ -1,5 +1,5 @@
 # Compulsory line, this is a version 3 file
 version=3
 
-http://www.cl.cam.ac.uk/~mgk25/download/ \
+http://www.cl.cam.ac.uk/~mgk25/jbigkit/download/ \
 	jbigkit-([\d\.]+).tar.gz
