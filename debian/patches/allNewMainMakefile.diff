@@ -5,29 +5,23 @@ Forwarded: no
 Upstream Makefile is barebones, and doesn't make any shared libraries.
 
 With some extra effort, this does.
+
+Refreshed for 2.1
 --- a/Makefile
 +++ b/Makefile
-@@ -11,9 +11,9 @@
- CFLAGS = $(CCFLAGS) -I../libjbig
+@@ -10,6 +10,7 @@ CFLAGS = -O2 -W -Wno-unused-result
+ export CC CFLAGS
  
- VERSION=2.0
+ VERSION=2.1
 +.PHONY: all lib pbm test clean install
  
  all: lib pbm
--	@echo "Enter 'make test' in order to start some automatic tests."
- 
- lib:
- 	(cd libjbig;  make "CC=$(CC)" "CFLAGS=$(CFLAGS)")
-@@ -30,9 +30,15 @@
- 	(cd libjbig; make clean)
- 	(cd pbmtools; make clean)
- 
--distribution: clean
--	rm -f libjbig/libjbig*.a
--	(cd ..; tar -c -v --exclude .svn -f jbigkit-$(VERSION).tar jbigkit ; \
--	  gzip -9f jbigkit-$(VERSION).tar )
--	scp ../jbigkit-$(VERSION).tar.gz slogin-serv1.cl.cam.ac.uk:public_html/download/
--	scp CHANGES slogin-serv1.cl.cam.ac.uk:public_html/jbigkit/
+ 	@echo "Enter 'make test' in order to start some automatic tests."
+@@ -42,3 +43,16 @@ distribution:
+ release:
+ 	rsync -t jbigkit-$(VERSION).tar.gz $(HOME)/public_html/download/
+ 	rsync -t jbigkit-$(VERSION)/CHANGES $(HOME)/public_html/jbigkit/
++
 +install: all
 +	install -d $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
 +	install -m 644 libjbig/.libs/*.so.*.*.* libjbig/.libs/*.a $(DESTDIR)/usr/lib/$(DEB_HOST_MULTIARCH)
