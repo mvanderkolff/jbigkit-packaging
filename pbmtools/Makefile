@@ -1,16 +1,18 @@
 # Unix makefile for the JBIG-KIT PBM tools
-# $Id: Makefile 1293 2008-08-25 22:26:39Z mgk25 $
 
 # Select an ANSI/ISO C compiler here, e.g. GNU gcc is recommended
 CC = gcc
 
 # Options for the compiler
-CFLAGS = -g -Wall -ansi -pedantic -I../libjbig # --coverage
+CFLAGS = -g -O -W -Wall -Wno-unused-result -ansi -pedantic # --coverage
+CPPFLAGS = -I../libjbig 
 
 .SUFFIXES: .1 .5 .txt $(SUFFIXES)
+.PHONY: txt test test82 test85 clean
 
-all: pbmtojbg jbgtopbm pbmtojbg85 jbgtopbm85 \
-	pbmtojbg.txt jbgtopbm.txt pbm.txt pgm.txt
+all: pbmtojbg jbgtopbm pbmtojbg85 jbgtopbm85 txt
+
+txt: pbmtojbg.txt jbgtopbm.txt pbm.txt pgm.txt
 
 pbmtojbg: pbmtojbg.o ../libjbig/libjbig.a
 	$(CC) $(CFLAGS) -o pbmtojbg pbmtojbg.o -L../libjbig -ljbig
@@ -36,6 +38,9 @@ pbmtojbg85.o: pbmtojbg85.c ../libjbig/jbig85.h
 ../libjbig/libjbig85.a: ../libjbig/jbig85.c ../libjbig/jbig85.h \
 	../libjbig/jbig_ar.c ../libjbig/jbig_ar.h
 	make -C ../libjbig libjbig85.a
+
+analyze:
+	clang $(CPPFLAGS) --analyze *.c
 
 test: test82 test85
 
@@ -145,10 +150,17 @@ test-t82.pbm:
 	make -C ../libjbig tstcodec
 	../libjbig/tstcodec $@
 
+FOPT=-c 1000 -p 300000 -m 3
+fuzz: test-t82.pbm
+	while \
+	  ./pbmtojbg -f test-t82.pbm | ./jbgfuzz.pl $(FOPT) && \
+	  ./pbmtojbg test-t82.pbm | ./jbgfuzz.pl $(FOPT) -d jbgtopbm ; \
+	do true; done
+
 .1.txt .5.txt:
 	groff -man -Tascii -P -c -P -b -P -u $< >$@
 
 clean:
 	rm -f *.o *~ core pbmtojbg jbgtopbm pbmtojbg85 jbgtopbm85
 	rm -f test-*.jbg test-*.pbm test-*.pgm test-*.jbg85 test-*.pbm85
-	rm -f *.gcda *.gcno
+	rm -f *.gcda *.gcno *.plist

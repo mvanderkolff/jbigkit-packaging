@@ -25,15 +25,6 @@
  * 
  *  If you want to use this program under different license conditions,
  *  then contact the author for an arrangement.
- *
- *  It is possible that certain products which can be built using this
- *  software module might form inventions protected by patent rights in
- *  some countries (e.g., by patents about arithmetic coding algorithms
- *  owned by IBM and AT&T in the USA). Provision of this software by the
- *  author does NOT include any licences for any patents. In those
- *  countries where a patent licence is required for certain applications
- *  of this software module, you will have to obtain such a licence
- *  yourself.
  */
 
 #include <assert.h>
@@ -117,7 +108,7 @@ void arith_encode_init(struct jbg_arenc_state *s, int reuse_st)
   int i;
   
   if (!reuse_st)
-    for (i = 0; i < 4096; s->st[i++] = 0);
+    for (i = 0; i < 4096; s->st[i++] = 0) ;
   s->c = 0;
   s->a = 0x10000L;
   s->sc = 0;
@@ -273,7 +264,7 @@ void arith_decode_init(struct jbg_ardec_state *s, int reuse_st)
   int i;
   
   if (!reuse_st)
-    for (i = 0; i < 4096; s->st[i++] = 0);
+    for (i = 0; i < 4096; s->st[i++] = 0) ;
   s->c = 0;
   s->a = 1;
   s->ct = 0;

@@ -1,9 +1,7 @@
 /*
  *  T.85 "light" version of the portable JBIG image compression library
  *
- *  Copyright 1995-2008 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
- *
- *  $Id: jbig85.c 1303 2008-08-30 20:16:20Z mgk25 $
+ *  Copyright 1995-2014 -- Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
  *
  *  This module implements a portable standard C encoder and decoder
  *  using the JBIG1 lossless bi-level image compression algorithm
@@ -27,15 +25,6 @@
  * 
  *  If you want to use this program under different license conditions,
  *  then contact the author for an arrangement.
- *
- *  It is possible that certain products which can be built using this
- *  software module might form inventions protected by patent rights in
- *  some countries (e.g., by patents about arithmetic coding algorithms
- *  owned by IBM and AT&T in the USA). Provision of this software by the
- *  author does NOT include any licences for any patents. In those
- *  countries where a patent licence is required for certain applications
- *  of this software module, you will have to obtain such a licence
- *  yourself.
  */
 
 #ifdef DEBUG
@@ -67,9 +56,8 @@
 /* object code version id */
 
 const char jbg85_version[] = 
-  "JBIG-KIT " JBG85_VERSION " (T.85 version) -- (c) 1995-2008 Markus Kuhn -- "
-  "Licence: " JBG85_LICENCE "\n"
-  "$Id: jbig85.c 1303 2008-08-30 20:16:20Z mgk25 $\n";
+  "JBIG-KIT " JBG85_VERSION " (T.85 version) -- (c) 1995-2014 Markus Kuhn -- "
+  "Licence: " JBG85_LICENCE "\n";
 
 #define _(String) String  /* to mark translatable string for GNU gettext */
 
@@ -311,9 +299,9 @@ void jbg85_enc_lineout(struct jbg85_enc_state *s, unsigned char *line,
     q1 = prevline;
     ltp = 1;
     if (q1)
-      while (p1 < line + bpl && (ltp = (*p1++ == *q1++)) != 0);
+      while (p1 < line + bpl && (ltp = (*p1++ == *q1++)) != 0) ;
     else
-      while (p1 < line + bpl && (ltp = (*p1++ == 0    )) != 0);
+      while (p1 < line + bpl && (ltp = (*p1++ == 0    )) != 0) ;
     arith_encode(&s->s, (s->options & JBG_LRLTWO) ? TPB2CX : TPB3CX,
 		 ltp == s->ltp_old);
 #ifdef DEBUG
@@ -483,7 +471,7 @@ void jbg85_enc_lineout(struct jbg85_enc_state *s, unsigned char *line,
       /* we have decided to perform an ATMOVE */
       s->new_tx = tmax;
 #ifdef DEBUG
-      fprintf(stderr, "ATMOVE: tx=%d, c_all=%d\n",
+      fprintf(stderr, "ATMOVE: tx=%d, c_all=%lu\n",
 	      s->new_tx, s->c_all);
 #endif
     } else {
@@ -581,6 +569,19 @@ void jbg85_dec_init(struct jbg85_dec_state *s,
   s->file = file;
   s->bie_len = 0;
   s->end_of_bie = 0;
+  s->x = 0;
+  s->y = 0;
+  s->i = 0;
+  s->comment_skip = 0;
+  s->buf_len = 0;
+  s->pseudo = 1;
+  s->at_moves = 0;
+  s->tx = 0;
+  s->lntp = 1;
+  s->p[0] = 0;
+  s->p[1] = -1;
+  s->p[2] = -1;
+  arith_decode_init(&s->s, 0);
   return;
 }
 
@@ -651,7 +652,7 @@ static size_t decode_pscd(struct jbg85_dec_state *s, unsigned char *data,
 	/* this line is 'typical' (i.e. identical to the previous one) */
 	if (s->p[1] < 0) {
 	  /* first line of page or (following SDRST) of stripe */
-	  for (p1 = hp1; p1 < hp1 + s->bpl; *p1++ = 0);
+	  for (p1 = hp1; p1 < hp1 + s->bpl; *p1++ = 0) ;
 	  s->intr = s->line_out(s, hp1, s->bpl, s->y, s->file);
 	  /* rotate the ring buffer that holds the last three lines */
 	  s->p[2] = s->p[1];
@@ -849,23 +850,27 @@ int jbg85_dec_in(struct jbg85_dec_state *s, unsigned char *data, size_t len,
       s->buffer[s->bie_len++] = data[(*cnt)++];
     if (s->bie_len < 20) 
       return JBG_EAGAIN;
-    /* test whether this looks like a valid JBIG header at all */
-    if (s->buffer[1] < s->buffer[0]) return JBG_EINVAL | 1;
-    /* are padding bits zero as required? */
-    if (s->buffer[3] != 0)           return JBG_EINVAL | 2; /* padding != 0 */
-    if ((s->buffer[18] & 0xf0) != 0) return JBG_EINVAL | 3; /* padding != 0 */
-    if ((s->buffer[19] & 0x80) != 0) return JBG_EINVAL | 4; /* padding != 0 */
+    /* parse header parameters */
     s->x0 = (((long) s->buffer[ 4] << 24) | ((long) s->buffer[ 5] << 16) |
 	     ((long) s->buffer[ 6] <<  8) | (long) s->buffer[ 7]);
     s->y0 = (((long) s->buffer[ 8] << 24) | ((long) s->buffer[ 9] << 16) |
 	     ((long) s->buffer[10] <<  8) | (long) s->buffer[11]);
     s->l0 = (((long) s->buffer[12] << 24) | ((long) s->buffer[13] << 16) |
 	     ((long) s->buffer[14] <<  8) | (long) s->buffer[15]);
+    s->bpl = (s->x0 >> 3) + !!(s->x0 & 7); /* bytes per line */
+    s->mx = s->buffer[16];
+    s->options = s->buffer[19];
+    s->s.nopadding = s->options & JBG_VLENGTH;
+    /* test whether this looks like a valid JBIG header at all */
+    if (s->buffer[1] < s->buffer[0]) return JBG_EINVAL | 1;
+    /* are padding bits zero as required? */
+    if (s->buffer[3] != 0)           return JBG_EINVAL | 2; /* padding != 0 */
+    if ((s->buffer[18] & 0xf0) != 0) return JBG_EINVAL | 3; /* padding != 0 */
+    if ((s->buffer[19] & 0x80) != 0) return JBG_EINVAL | 4; /* padding != 0 */
     if (!s->buffer[2]) return JBG_EINVAL | 5;
     if (!s->x0)        return JBG_EINVAL | 6;
     if (!s->y0)        return JBG_EINVAL | 7;
     if (!s->l0)        return JBG_EINVAL | 8;
-    s->mx = s->buffer[16];
     if (s->mx > 127)
       return JBG_EINVAL | 9;
     if (s->buffer[ 0] != 0) return JBG_EIMPL | 8; /* parameter outside T.85 */
@@ -875,25 +880,9 @@ int jbg85_dec_in(struct jbg85_dec_state *s, unsigned char *data, size_t len,
 #if JBG85_STRICT_ORDER_BITS
     if (s->buffer[18] != 0) return JBG_EIMPL |12; /* parameter outside T.85 */
 #endif
-    s->options = s->buffer[19];
     if (s->options & 0x17)  return JBG_EIMPL |13; /* parameter outside T.85 */
     if (s->x0 > (s->linebuf_len / ((s->options & JBG_LRLTWO) ? 2 : 3)) * 8)
       return JBG_ENOMEM; /* provided line buffer is too short */
-    arith_decode_init(&s->s, 0);
-    s->s.nopadding = s->options & JBG_VLENGTH;
-    s->comment_skip = 0;
-    s->buf_len = 0;
-    s->x = 0;
-    s->y = 0;
-    s->i = 0;
-    s->pseudo = 1;
-    s->at_moves = 0;
-    s->tx = 0;
-    s->lntp = 1;
-    s->bpl = (s->x0 >> 3) + !!(s->x0 & 7); /* bytes per line */
-    s->p[0] = 0;
-    s->p[1] = -1;
-    s->p[2] = -1;
   }
 
   /*
@@ -947,7 +936,7 @@ int jbg85_dec_in(struct jbg85_dec_state *s, unsigned char *data, size_t len,
 	return JBG_EABORT;
       case MARKER_STUFF:
 	/* forward stuffed 0xff to arithmetic decoder */
-	if (decode_pscd(s, s->buffer, 2) == 2)
+	if (decode_pscd(s, s->buffer, 2) == 2 || !s->intr)
 	  s->buf_len = 0;
 	if (s->intr)
 	  return JBG_EOK_INTR;  /* line_out() requested interrupt */

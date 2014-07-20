@@ -2,8 +2,6 @@
  *  jbgtopbm85 - JBIG to Portable Bitmap converter (T.85 version)
  *
  *  Markus Kuhn - http://www.cl.cam.ac.uk/~mgk25/jbigkit/
- *
- *  $Id: jbgtopbm85.c 1296 2008-08-26 19:49:37Z mgk25 $
  */
 
 #include <stdio.h>
@@ -161,17 +159,18 @@ int main (int argc, char **argv)
     }
     exit(1);
   }
-  while (result == JBG_EAGAIN || result == JBG_EOK_INTR) {
+  if (result == JBG_EAGAIN || result == JBG_EOK_INTR) {
     /* signal end-of-BIE explicitely */
     result = jbg85_dec_end(&s);
-    if (result == JBG_EOK_INTR) {
+    while (result == JBG_EOK_INTR) {
       /* demonstrate decoder interrupt at given line number */
       printf("Decoding interrupted after %lu lines and %lu BIE bytes "
 	     "... continuing ...\n", s.y, (unsigned long) bytes_read);
+      result = jbg85_dec_end(&s);
     }
   }
   if (result != JBG_EOK) {
-    fprintf(stderr, "Problem with input file '%s':\n%s\n"
+    fprintf(stderr, "Problem with input file '%s': %s\n"
             "(error code 0x%02x, %lu = 0x%04lx BIE bytes "
 	    "and %lu pixel rows processed)\n",
 	    fnin, jbg85_strerror(result), result,

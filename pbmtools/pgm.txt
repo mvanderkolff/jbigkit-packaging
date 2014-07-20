@@ -29,7 +29,7 @@ DESCRIPTION
        - Width  * height gray values, each in ASCII decimal, between 0 and the
          specified maximum value, separated by  whitespace,  starting  at  the
          top-left  corner of the graymap, proceeding in normal English reading
-         order.  A value of 0 means black, and the maximum value means  white.
+         order.  A value of 0 means black, and the maximum value means white.
 
        - Characters from a "#" to the next end-of-line are ignored (comments).
 
@@ -57,24 +57,24 @@ DESCRIPTION
 
        - The "magic number" is "P5" instead of "P2".
 
-       - The  gray values are stored as plain bytes, instead of ASCII decimal.
+       - The gray values are stored as plain bytes, instead of ASCII decimal.
 
-       - No whitespace is allowed in the grays  section,  and  only  a  single
-         character  of  whitespace  (typically a newline) is allowed after the
+       - No  whitespace  is  allowed  in  the grays section, and only a single
+         character of whitespace (typically a newline) is  allowed  after  the
          maxval.
 
        - The files are smaller and many times faster to read and write.
 
-       Note that this raw format can only be used for  maxvals  less  than  or
-       equal  to 255.  If you use the pgm library and try to write a file with
+       Note  that  this  raw  format can only be used for maxvals less than or
+       equal to 255.  If you use the pgm library and try to write a file  with
        a larger maxval, it will automatically fall back on the slower but more
        general plain format.
 
 SEE ALSO
-       fitstopgm(1),  fstopgm(1),  hipstopgm(1),  lispmtopgm(1), psidtopgm(1),
-       rawtopgm(1), pgmbentley(1),  pgmcrater(1),  pgmedge(1),  pgmenhance(1),
-       pgmhist(1),    pgmnorm(1),    pgmoil(1),   pgmramp(1),   pgmtexture(1),
-       pgmtofits(1), pgmtofs(1), pgmtolispm(1), pgmtopbm(1),  pnm(5),  pbm(5),
+       fitstopgm(1), fstopgm(1),  hipstopgm(1),  lispmtopgm(1),  psidtopgm(1),
+       rawtopgm(1),  pgmbentley(1),  pgmcrater(1),  pgmedge(1), pgmenhance(1),
+       pgmhist(1),   pgmnorm(1),   pgmoil(1),    pgmramp(1),    pgmtexture(1),
+       pgmtofits(1),  pgmtofs(1),  pgmtolispm(1), pgmtopbm(1), pnm(5), pbm(5),
        ppm(5)
 
 AUTHOR

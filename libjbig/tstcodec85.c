@@ -4,14 +4,13 @@
  *  Run this test sequence after each modification on the JBIG library.
  *
  *  Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
- *
- *  $Id: tstcodec85.c 1290 2008-08-20 18:36:07Z mgk25 $
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
+#include <assert.h>
 
 #include "jbig85.h"
 
@@ -64,8 +63,8 @@ static void testbuf_writel(unsigned char *start, size_t len, void *dummy)
     unsigned sum = 0;
     
     for (p = start; p - start < (ptrdiff_t) len; sum = (sum ^ *p++) << 1);
-    printf("  testbuf_writel: %4d bytes, checksum %04x\n",
-	   len, sum & 0xffff);
+    printf("  testbuf_writel: %4lu bytes, checksum %04x\n",
+	   (unsigned long) len, sum & 0xffff);
   }
 #endif
 
@@ -78,6 +77,9 @@ static int line_out(const struct jbg85_dec_state *s,
 		    unsigned char *start, size_t len,
 		    unsigned long y, void *bitmap)
 {
+  assert(jbg85_dec_validwidth(s));
+  assert(len == (jbg85_dec_getwidth(s) >> 3) + !!(jbg85_dec_getwidth(s) & 7));
+  assert(y < jbg85_dec_getheight(s));
   memcpy((unsigned char *) bitmap + len * y, start, len);
   return 0;
 }
@@ -334,8 +336,8 @@ int main(int argc, char **argv)
   for (i = 0; i < 16 * 16 && !trouble; i++) {
     pix = arith_decode(sd, (t82cx[i >> 4] >> ((15 - i) & 15)) & 1);
     if (pix < 0) {
-      printf("Problem at pixel %ld, byte %d.\n\n",
-	     i+1, sd->pscd_ptr - sd->pscd_end);
+      printf("Problem at pixel %ld, byte %ld.\n\n",
+	     i+1, (long) (sd->pscd_ptr - sd->pscd_end));
       trouble++;
       break;
     }
@@ -346,8 +348,8 @@ int main(int argc, char **argv)
     }
   }
   if (!trouble && sd->pscd_ptr != sd->pscd_end - 2) {
-    printf("%d bytes left after decoder finished.\n\n",
-	   sd->pscd_end - sd->pscd_ptr - 2);
+    printf("%ld bytes left after decoder finished.\n\n",
+	   (long) (sd->pscd_end - sd->pscd_ptr - 2));
     trouble++;
   }
   printf("Test result: ");
@@ -374,8 +376,8 @@ int main(int argc, char **argv)
       pix = arith_decode(sd, (t82cx[i >> 4] >> ((15 - i) & 15)) & 1);
     }
     if (pix < 0) {
-      printf("Problem at pixel %ld, byte %d.\n\n",
-	     i+1, sd->pscd_ptr - sd->pscd_end);
+      printf("Problem at pixel %ld, byte %ld.\n\n",
+	     i+1, (long) (sd->pscd_ptr - sd->pscd_end));
       trouble++;
       break;
     }
@@ -386,8 +388,8 @@ int main(int argc, char **argv)
     }
   }
   if (!trouble && sd->pscd_ptr != sd->pscd_end - 2) {
-    printf("%d bytes left after decoder finished.\n\n",
-	   sd->pscd_end - sd->pscd_ptr - 2);
+    printf("%ld bytes left after decoder finished.\n\n",
+	   (long) (sd->pscd_end - sd->pscd_ptr - 2));
     trouble++;
   }
   printf("Test result: ");

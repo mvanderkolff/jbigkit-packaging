@@ -100,23 +100,23 @@ OPTIONS
                      by  the  standard.  (The  maximal  vertical offset of the
                      adaptive template pixel is always zero for this encoder.)
 
-       -t number     Encode  only the specified number of most significant bit
-                     planes. This option allows to  reduce  the  depth  of  an
-                     input  PGM  file  if not all bits per pixel are needed in
+       -t number     Encode only the specified number of most significant  bit
+                     planes.  This  option  allows  to  reduce the depth of an
+                     input PGM file if not all bits per pixel  are  needed  in
                      the output.
 
        -o number     JBIG1 separates an image into several horizontal stripes,
-                     resolution  layers  and  planes, were each plane contains
-                     one bit per pixel. One single stripe  in  one  plane  and
+                     resolution layers and planes, were  each  plane  contains
+                     one  bit  per  pixel.  One single stripe in one plane and
                      layer is encoded as a data unit called stripe data entity
-                     (SDE) inside the BIE. There  are  12  different  possible
+                     (SDE)  inside  the  BIE.  There are 12 different possible
                      orders in which the SDEs can be stored inside the BIE and
-                     number selects which one shall be used. The order of  the
-                     SDEs  is  only  relevant  for  applications  that want to
-                     decode a JBIG1 file which has not yet completely  arrived
-                     from  e.g.  a slow network connection.  For instance some
+                     number  selects which one shall be used. The order of the
+                     SDEs is only  relevant  for  applications  that  want  to
+                     decode  a JBIG1 file which has not yet completely arrived
+                     from e.g. a slow network connection.  For  instance  some
                      applications prefer that the outermost of the three loops
-                     (stripes,  layers, planes) is over all layers so that all
+                     (stripes, layers, planes) is over all layers so that  all
                      data of the lowest resolution layer is transmitted first.
                      The   following  values  for  number  select  these  loop
                      arrangements for writing the SDEs (outermost loop first):
@@ -128,17 +128,17 @@ OPTIONS
                         5      planes, stripes, layers
                         6      stripes, layers, planes
 
-                     All  loops  count starting with zero, however by adding 8
-                     to the above order code, the layer loop can  be  reversed
+                     All loops count starting with zero, however by  adding  8
+                     to  the  above order code, the layer loop can be reversed
                      so that it counts down to zero and then higher resolution
                      layers will be stored before lower layers.  Default order
                      is 3 which writes at first all planes of the first stripe
-                     and then completes layer 0  before  continuing  with  the
+                     and  then  completes  layer  0 before continuing with the
                      next layer and so on.
 
-       -p number     This  option  allows  to  activate  or deactivate various
-                     optional algorithms defined in the JBIG1  standard.  Just
-                     add  the  numbers of the following options which you want
+       -p number     This option allows  to  activate  or  deactivate  various
+                     optional  algorithms  defined in the JBIG1 standard. Just
+                     add the numbers of the following options which  you  want
                      to activate in order to get the number value:
 
                         4      deterministic prediction (DPON)
@@ -146,77 +146,77 @@ OPTIONS
                        16      diff. layer typ. pred. (TPDON)
                        64      layer 0 two-line template (LRLTWO)
 
-                     Except for special applications (like communication  with
-                     JBIG1  subset implementations) and for debugging purposes
-                     you will normally not want to change anything  here.  The
+                     Except  for special applications (like communication with
+                     JBIG1 subset implementations) and for debugging  purposes
+                     you  will  normally not want to change anything here. The
                      default  is  28,  which  provides  the  best  compression
                      result.
 
-       -C string     Add the string in a comment marker segment  to  the  pro-
-                     duced  data  stream.  (There is no support at present for
+       -C string     Add  the  string  in a comment marker segment to the pro-
+                     duced data stream. (There is no support  at  present  for
                      adding comments that contain the zero byte.)
 
-       -c            Determine the adaptive template pixel  movement  as  sug-
-                     gested  in  annex  C of the standard. By default the tem-
+       -c            Determine  the  adaptive  template pixel movement as sug-
+                     gested in annex C of the standard. By  default  the  tem-
                      plate change takes place directly in the next line, which
-                     is  most effective. However, a few conformance test exam-
+                     is most effective. However, a few conformance test  exam-
                      ples in the standard require the adaptive template change
-                     to  be  delayed  until the first line of the next stripe.
-                     This option selects this special behavior, which is  nor-
-                     mally  not  required except in order to pass some confor-
+                     to be delayed until the first line of  the  next  stripe.
+                     This  option selects this special behavior, which is nor-
+                     mally not required except in order to pass  some  confor-
                      mance tests.
 
        -r            Use the SDRST marker instead of the normal SDNORM marker.
                      The probably only useful application of this option is to
-                     generate test data for checking whether a  JBIG1  decoder
-                     has  implemented  SDRST correctly. In a normal JBIG1 data
+                     generate  test  data for checking whether a JBIG1 decoder
+                     has implemented SDRST correctly. In a normal  JBIG1  data
                      stream, each stripe data entity (SDE) is terminated by an
-                     SDNORM  marker,  which  preserves the state of the arith-
-                     metic encoder (and more) for the next stripe in the  same
-                     layer.  The alternative SDRST marker resets this state at
+                     SDNORM marker, which preserves the state  of  the  arith-
+                     metic  encoder (and more) for the next stripe in the same
+                     layer. The alternative SDRST marker resets this state  at
                      the end of the stripe.
 
-       -Y number     A long time ago, there were fax  machines  that  couldn't
-                     even  hold  a  single  page  in memory. They had to start
-                     transmitting data before the page  was  scanned  in  com-
-                     pletely  and  the  length  of  the  image was known.  The
-                     authors of the standard added a rather ugly hack  to  the
-                     otherwise  beautiful  JBIG1  format  to support this. The
-                     NEWLEN marker  segment  can  override  the  image  height
-                     stated  in  the  BIE  header  anywhere  later in the data
-                     stream. Normally pbmtojbg never generates  NEWLEN  marker
-                     segments,  as  it  knows the correct image height when it
-                     outputs the header. This option is  solely  intended  for
-                     the  purpose  of generating test files with NEWLEN marker
-                     segments. It can be used  to  specify  a  higher  initial
+       -Y number     A  long  time  ago, there were fax machines that couldn't
+                     even hold a single page in  memory.  They  had  to  start
+                     transmitting  data  before  the  page was scanned in com-
+                     pletely and the length  of  the  image  was  known.   The
+                     authors  of  the standard added a rather ugly hack to the
+                     otherwise beautiful JBIG1 format  to  support  this.  The
+                     NEWLEN  marker  segment  can  override  the  image height
+                     stated in the BIE  header  anywhere  later  in  the  data
+                     stream.  Normally  pbmtojbg never generates NEWLEN marker
+                     segments, as it knows the correct image  height  when  it
+                     outputs  the  header.  This option is solely intended for
+                     the purpose of generating test files with  NEWLEN  marker
+                     segments.  It  can  be  used  to specify a higher initial
                      image height for use in the BIE header, and pbmtojbg will
-                     then add a NEWLEN marker segment at the  latest  possible
-                     opportunity  to  the  data  stream  to signal the correct
+                     then  add  a NEWLEN marker segment at the latest possible
+                     opportunity to the data  stream  to  signal  the  correct
                      final height.
 
-       -f            This option makes the output file comply to the  "facsim-
-                     ile  application profile" defined in ITU-T Recommendation
-                     T.85. It is a shortcut for -q -o 0 -p 8 -s 128  -t  1  -m
+       -f            This  option makes the output file comply to the "facsim-
+                     ile application profile" defined in ITU-T  Recommendation
+                     T.85.  It  is  a shortcut for -q -o 0 -p 8 -s 128 -t 1 -m
                      127.
 
-       -v            After  the  BIE has been created, a few technical details
+       -v            After the BIE has been created, a few  technical  details
                      of the created file will be listed (verbose mode).
 
 BUGS
-       Using standard input and standard output for binary data works only  on
-       systems  where  there  is no difference between binary and text streams
-       (e.g., Unix). On other systems (e.g., MS-DOS), using standard input  or
-       standard  output  may  cause  control  characters  like  CR or LF to be
+       Using  standard input and standard output for binary data works only on
+       systems where there is no difference between binary  and  text  streams
+       (e.g.,  Unix). On other systems (e.g., MS-DOS), using standard input or
+       standard output may cause control  characters  like  CR  or  LF  to  be
        inserted or deleted and this will damage the binary data.
 
 STANDARDS
-       This program implements the JBIG1 image coding algorithm  as  specified
+       This  program  implements the JBIG1 image coding algorithm as specified
        in ISO/IEC 11544:1993 and ITU-T T.82(1993).
 
 AUTHOR
-       The  pbmtojbg  program  is part of the JBIG-KIT package, which has been
-       developed by Markus Kuhn.  The most recent  version  of  this  portable
-       JBIG1     library     and     tools     set     is    available    from
+       The pbmtojbg program is part of the JBIG-KIT package,  which  has  been
+       developed  by  Markus  Kuhn.   The most recent version of this portable
+       JBIG1    library    and     tools     set     is     available     from
        <http://www.cl.cam.ac.uk/~mgk25/jbigkit/>.
 
 SEE ALSO

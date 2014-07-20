@@ -4,8 +4,6 @@
  *  Run this test sequence after each modification on the JBIG library.
  *
  *  Markus Kuhn -- http://www.cl.cam.ac.uk/~mgk25/
- *
- *  $Id: tstcodec.c 1290 2008-08-20 18:36:07Z mgk25 $
  */
 
 #include <stdio.h>
@@ -64,8 +62,8 @@ static void testbuf_writel(unsigned char *start, size_t len, void *dummy)
     unsigned sum = 0;
     
     for (p = start; p - start < (ptrdiff_t) len; sum = (sum ^ *p++) << 1);
-    printf("  testbuf_writel: %4d bytes, checksum %04x\n",
-	   len, sum & 0xffff);
+    printf("  testbuf_writel: %4lu bytes, checksum %04x\n",
+	   (unsigned long) len, sum & 0xffff);
   }
 #endif
 
@@ -399,8 +397,8 @@ int main(int argc, char **argv)
   for (i = 0; i < 16 * 16 && !trouble; i++) {
     pix = arith_decode(sd, (t82cx[i >> 4] >> ((15 - i) & 15)) & 1);
     if (pix < 0) {
-      printf("Problem at pixel %ld, byte %d.\n\n",
-	     i+1, sd->pscd_ptr - sd->pscd_end);
+      printf("Problem at pixel %ld, byte %ld.\n\n",
+	     i+1, (long) (sd->pscd_ptr - sd->pscd_end));
       trouble++;
       break;
     }
@@ -411,8 +409,8 @@ int main(int argc, char **argv)
     }
   }
   if (!trouble && sd->pscd_ptr != sd->pscd_end - 2) {
-    printf("%d bytes left after decoder finished.\n\n",
-	   sd->pscd_end - sd->pscd_ptr - 2);
+    printf("%ld bytes left after decoder finished.\n\n",
+	   (long) (sd->pscd_end - sd->pscd_ptr - 2));
     trouble++;
   }
   printf("Test result: ");
@@ -439,8 +437,8 @@ int main(int argc, char **argv)
       pix = arith_decode(sd, (t82cx[i >> 4] >> ((15 - i) & 15)) & 1);
     }
     if (pix < 0) {
-      printf("Problem at pixel %ld, byte %d.\n\n",
-	     i+1, sd->pscd_ptr - sd->pscd_end);
+      printf("Problem at pixel %ld, byte %ld.\n\n",
+	     i+1, (long) (sd->pscd_ptr - sd->pscd_end));
       trouble++;
       break;
     }
@@ -451,8 +449,8 @@ int main(int argc, char **argv)
     }
   }
   if (!trouble && sd->pscd_ptr != sd->pscd_end - 2) {
-    printf("%d bytes left after decoder finished.\n\n",
-	   sd->pscd_end - sd->pscd_ptr - 2);
+    printf("%ld bytes left after decoder finished.\n\n",
+	   (long) (sd->pscd_end - sd->pscd_ptr - 2));
     trouble++;
   }
   printf("Test result: ");
@@ -483,11 +481,16 @@ int main(int argc, char **argv)
   problems += test_cycle(&pp, 1960, 1951,
 			 JBG_DELAY_AT | JBG_TPBON | JBG_TPDON | JBG_DPON,
 			 0, 6, 1, 2, 8, 279314L, "3.4");
-#if 0
-  puts("Test 3.5: as Test 3.4 but with order bit SEQ set");
+  puts("Test 3.5: as Test 3.4 but with DPPRIV=1");
+  problems += test_cycle(&pp, 1960, 1951,
+			 JBG_DELAY_AT | JBG_TPBON | JBG_TPDON | JBG_DPON |
+			 JBG_DPPRIV,
+			 0, 6, 1, 2, 8, 279314L + 1728, "3.5");
+#if 0 /* Note: option SEQ is currently not supported by the decoder */
+  puts("Test 3.6: as Test 3.4 but with order bit SEQ set");
   problems += test_cycle(&pp, 1960, 1951,
 			 JBG_DELAY_AT | JBG_TPBON | JBG_TPDON | JBG_DPON,
-			 JBG_SEQ, 6, 1, 2, 8, 279314L, "3.5");
+			 JBG_SEQ, 6, 1, 2, 8, 279314L, "3.6");
 #endif
 #endif
 
