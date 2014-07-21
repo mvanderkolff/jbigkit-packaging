@@ -1,3 +1,7 @@
+Subject: Make use of libtool
+Author: Michael van der Kolff <mvanderkolff@gmail.com>
+Forwarded: no
+
 diff --git a/libjbig/Makefile b/libjbig/Makefile
 index f2898f5..8b1f446 100644
 --- a/libjbig/Makefile

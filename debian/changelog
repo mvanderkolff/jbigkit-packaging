@@ -1,19 +1,21 @@
-jbigkit (2.1-1) UNRELEASED; urgency=medium
+jbigkit (2.1-1) unstable; urgency=low
 
   [ Michael van der Kolff ]
-  * Tag for new release
-
-  [ Mathieu Malaterre ]
-  * fix lintian warning about d/changelog tweak README.source
-
-  [ Michael van der Kolff ]
-  * Closes: #754344 (Thanks: Steve Langasek <steve.langasek@canonical.com>)
+  * Remove explicit calls to `install -s`.
+    Closes: #754344 (Thanks: Steve Langasek <steve.langasek@canonical.com>)
+  * Update package priority (Closes: #755284)
   * Update watch location
   * Imported Upstream version 2.1
 
-  [ mvanderkolff ]
+ -- Mathieu Malaterre <malat@debian.org>  Mon, 21 Jul 2014 13:39:55 +0200
 
- -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun, 20 Jul 2014 20:45:41 +1000
+jbigkit (2.0-2.1) unstable; urgency=medium
+
+  * Non-maintainer upload.
+  * Add CVE-2013-6369.patch patch.
+    CVE-2013-6369: Fix stack-based buffer overflow flaw. (Closes: #743960)
+
+ -- Salvatore Bonaccorso <carnil@debian.org>  Sun, 20 Apr 2014 16:37:42 +0200
 
 jbigkit (2.0-2) unstable; urgency=low
 

@@ -17,3 +17,6 @@ debian/jbgtopbm85.1:
 debian/pbmtojbg85.1:
 	help2man -n "creates bi-level image entity (BIE) as output file" \
 		--no-discard-stderr --output=debian/pbmtojbg85.1 --no-info pbmtojbg85
+
+get-orig-source:
+	uscan --verbose --force-download --rename
