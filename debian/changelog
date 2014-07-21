@@ -1,7 +1,7 @@
 jbigkit (2.1-1) unstable; urgency=low
 
   * Bump Std-Vers to 3.9.5, no changes needed
-  * Add symbols file (pulled from ubuntu diff)
+  * Add symbols file (pulled from ubuntu diff) (Closes: #712240)
   * Remove explicit calls to `install -s`.
     Closes: #754344 (Thanks: Steve Langasek <steve.langasek@canonical.com>)
   * Update package priority (Closes: #755284)
