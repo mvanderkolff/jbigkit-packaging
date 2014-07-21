@@ -6,7 +6,7 @@ jbigkit (2.1-1) unstable; urgency=low
     Closes: #754344 (Thanks: Steve Langasek <steve.langasek@canonical.com>)
   * Update package priority (Closes: #755284)
   * Update watch location
-  * Imported Upstream version 2.1 (Closes: #680935)
+  * Imported Upstream version 2.1
 
  -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun, 20 Jul 2014 20:45:41 +1000
 
