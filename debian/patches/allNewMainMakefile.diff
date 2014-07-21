@@ -9,7 +9,14 @@ With some extra effort, this does.
 Refreshed for 2.1
 --- a/Makefile
 +++ b/Makefile
-@@ -10,6 +10,7 @@ CFLAGS = -O2 -W -Wno-unused-result
+@@ -4,12 +4,13 @@
+ CC = gcc
+ 
+ # Options for the compiler: A high optimization level is suggested
+-CFLAGS = -O2 -W -Wno-unused-result
++CFLAGS += -O2 -W -Wno-unused-result
+ # CFLAGS = -O -g -W -Wall -Wno-unused-result -ansi -pedantic # -DDEBUG
+ 
  export CC CFLAGS
  
  VERSION=2.1
