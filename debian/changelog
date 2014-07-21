@@ -1,13 +1,14 @@
 jbigkit (2.1-1) unstable; urgency=low
 
-  [ Michael van der Kolff ]
+  * Bump Std-Vers to 3.9.5, no changes needed
+  * Add symbols file (pulled from ubuntu diff)
   * Remove explicit calls to `install -s`.
     Closes: #754344 (Thanks: Steve Langasek <steve.langasek@canonical.com>)
   * Update package priority (Closes: #755284)
   * Update watch location
   * Imported Upstream version 2.1
 
- -- Mathieu Malaterre <malat@debian.org>  Mon, 21 Jul 2014 13:39:55 +0200
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun, 20 Jul 2014 20:45:41 +1000
 
 jbigkit (2.0-2.1) unstable; urgency=medium
 
