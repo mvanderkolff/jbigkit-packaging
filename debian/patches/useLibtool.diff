@@ -27,14 +27,14 @@ index f2898f5..8b1f446 100644
 -	ar rc libjbig.a jbig.o jbig_ar.o
 -	-ranlib libjbig.a
 +tstcodec: tstcodec.o libjbig.a
-+	$(CC) $(CFLAGS) -o tstcodec $+
++	$(CC) $(LDFLAGS) $(CFLAGS) -o tstcodec $+
  
 -libjbig85.a: jbig85.o jbig_ar.o
 -	rm -f libjbig85.a
 -	ar rc libjbig85.a jbig85.o jbig_ar.o
 -	-ranlib libjbig85.a
 +tstcodec85: tstcodec85.o libjbig.a
-+	$(CC) $(CFLAGS) -o tstcodec85 $+
++	$(CC) $(LDFLAGS) $(CFLAGS) -o tstcodec85 $+
  
 -jbig.o: jbig.c jbig.h jbig_ar.h
 -jbig85.o: jbig85.c jbig85.h jbig_ar.h
