@@ -9,6 +9,7 @@ Vcs-Git: git://github.com/mvanderkolff/jbigkit-packaging.git
 Vcs-Browser: https://github.com/mvanderkolff/jbigkit-packaging
 
 Package: jbigkit-bin
+Priority: optional
 Section: graphics
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
@@ -21,6 +22,7 @@ Description: JBIGkit binaries
  This package contains the binaries from JBIG-KIT.
 
 Package: libjbig-dev
+Priority: optional
 Section: libdevel
 Architecture: any
 Multi-Arch: same
@@ -38,6 +40,7 @@ Description: JBIGkit development files
  one library (libjbig).
 
 Package: libjbig0
+Priority: optional
 Architecture: any
 Multi-Arch: same
 Pre-Depends: multiarch-support
