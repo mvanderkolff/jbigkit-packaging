@@ -2,7 +2,7 @@ jbigkit (2.1-2) UNRELEASED; urgency=medium
 
   [ Michael van der Kolff ]
   * Don't override passed CFLAGS in Makefile
-  * Use -Wall, remove -Wno-unused-result (covering #680935)
+  * Use -Wall, remove -Wno-unused-result (papering over #680935)
   * Fix remaining unused result warnings (Thanks Colin) (Closes: #680935)
   * Add static library to dev package (Closes: #741379)
 
