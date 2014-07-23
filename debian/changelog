@@ -1,3 +1,9 @@
+jbigkit (2.1-3) UNRELEASED; urgency=low
+
+  * Fix up typo in man page
+
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Wed, 23 Jul 2014 19:41:11 +1000
+
 jbigkit (2.1-2) unstable; urgency=medium
 
   * Don't override passed CFLAGS in Makefile (so it now hardens properly)
