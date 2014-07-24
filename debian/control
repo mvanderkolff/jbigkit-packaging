@@ -24,7 +24,7 @@ Package: libjbig-dev
 Section: libdevel
 Architecture: any
 Multi-Arch: same
-Pre-Depends: multiarch-support
+Pre-Depends: ${misc:Pre-Depends}
 Depends: libjbig0 (= ${binary:Version}), ${misc:Depends}
 Description: JBIGkit development files
  JBIG-KIT provides a portable library of compression and decompression functions
@@ -40,7 +40,7 @@ Description: JBIGkit development files
 Package: libjbig0
 Architecture: any
 Multi-Arch: same
-Pre-Depends: multiarch-support
+Pre-Depends: ${misc:Pre-Depends}
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: JBIGkit libraries
  JBIG-KIT provides a portable library of compression and decompression functions
