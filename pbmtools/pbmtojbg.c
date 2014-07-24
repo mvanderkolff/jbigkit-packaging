@@ -86,7 +86,11 @@ static unsigned long getint(FILE *f)
       while ((c = getc(f)) != EOF && !(c == 13 || c == 10)) ;
   if (c != EOF) {
     ungetc(c, f);
-    fscanf(f, "%lu", &i);
+    if(fscanf(f, "%lu", &i) != 1) {
+      /* should never fail, since c must be a digit */
+      fprintf(stderr, "Unexpected failure reading digit '%c'\n", c);
+      exit(1);
+    }
   }
 
   return i;
@@ -300,7 +304,9 @@ int main (int argc, char **argv)
     break;
   case '4':
     /* PBM raw binary format */
-    fread(bitmap[0], bitmap_size, 1, fin);
+    if (fread(bitmap[0], bitmap_size, 1, fin) != 1) {
+      /* silence compiler warnings; ferror/feof checked below */
+    }
     break;
   case '2':
   case '5':
@@ -312,8 +318,18 @@ int main (int argc, char **argv)
 	for (j = 0; j < bpp; j++)
 	  image[x * bpp + (bpp - 1) - j] = v >> (j * 8);
       }
-    } else
-      fread(image, width * height, bpp, fin);
+    } else {
+      if (fread(image, width * height, bpp, fin) != (size_t) bpp) {
+        if (ferror(fin)) {
+          fprintf(stderr, "Problem while reading input file '%s", fnin);
+          perror("'");
+          exit(1);
+        } else {
+          fprintf(stderr, "Unexpected end of input file '%s'!\n", fnin);
+          exit(1);
+        }
+      }
+    }
     jbg_split_planes(width, height, planes, encode_planes, image, bitmap,
 		     use_graycode);
     free(image);
