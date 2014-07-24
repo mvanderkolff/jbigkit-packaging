@@ -1,10 +1,10 @@
-jbigkit (2.1-3) UNRELEASED; urgency=low
+jbigkit (2.1-3) unstable; urgency=low
 
   * Fix up typo in man page
   * Correct makefile so that test targets use correct CFLAGS, too
   * Fix lintian pre-depends-directly-on-multiarch-support
 
- -- Michael van der Kolff <mvanderkolff@gmail.com>  Wed, 23 Jul 2014 19:41:11 +1000
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Fri, 25 Jul 2014 08:39:06 +1000
 
 jbigkit (2.1-2) unstable; urgency=medium
 
