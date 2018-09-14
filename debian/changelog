@@ -1,3 +1,9 @@
+jbigkit (2.1-4) UNRELEASED; urgency=medium
+
+  * Use secure URI in Vcs control header.
+
+ -- Jelmer Vernooĳ <jelmer@debian.org>  Fri, 14 Sep 2018 11:05:23 +0100
+
 jbigkit (2.1-3) unstable; urgency=low
 
   * Fix up typo in man page
