@@ -1,11 +1,15 @@
+jbigkit (2.1-5) UNRELEASED; urgency=medium
+
+  * Bump Compat to 13
+  * Suppressed dh_missing (for static libraries)
+
 jbigkit (2.1-4) unstable; urgency=medium
 
   * Use secure URI in Vcs control header (thanks, jelmer@!).
   * Add patch from upstream, closing serious bugs (Closes: #869708, #969593)
   * Bump Std-Vers to 4.6.1, no changes needed
-  * Bump Compat to 13 - tests needed to be parallelisable
+  * Bump Compat to 12 - tests needed to be parallelisable
   * Fixed non-parallelised tests
-  * Suppressed dh_missing (for static libraries)
   * Lintian-clean!
 
  -- Michael van der Kolff <mvanderkolff@gmail.com>  Mon, 3 Oct 2022 16:43:00 +1100
