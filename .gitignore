@@ -1,6 +1,7 @@
 .pc
 *.so*
 *.o
+*.pic_o
 *.a
 *.lo
 *.la
