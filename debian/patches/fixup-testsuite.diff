@@ -1,0 +1,90 @@
+Author: Michael van der Kolff <mvanderkolff@gmail.com>
+
+Parallelise the test suite by untangling the instances from each other.
+--- a/pbmtools/Makefile
++++ b/pbmtools/Makefile
+@@ -55,21 +55,21 @@
+ 	make IMG=mx        "OPTIONSP=-q -s 3 -m 128 -p 92" dotest2b
+ 	make IMG=mx        "OPTIONSP=-q -Y -1"             dotest2b
+ 	make IMG=mx        "OPTIONSP=-Y -1"                dotest2b
+-	rm -f test-*.jbg test-*.pbm test-*.pgm
++	rm -f test-ccitt1.jbg test-ccitt1.pbm
+ 	./jbgtopbm ../examples/ccitt1.jbg | ./pbmtojbg > test-ccitt1.jbg
+ 	cmp ../examples/ccitt1.jbg test-ccitt1.jbg
+-	rm -f test-*.jbg test-*.pbm test-*.pgm
++	rm -f test-ccitt1.jbg test-ccitt1.pbm
+ 	./jbgtopbm < ../examples/ccitt1.jbg | ./pbmtojbg - test-ccitt1.jbg
+ 	cmp ../examples/ccitt1.jbg test-ccitt1.jbg
+-	rm -f test-*.jbg test-*.pbm test-*.pgm
++	rm -f test-ccitt1.jbg test-ccitt1.pbm
+ 	./jbgtopbm < ../examples/ccitt1.jbg - test-ccitt1.pbm ; \
+ 	  ./pbmtojbg test-ccitt1.pbm test-ccitt1.jbg
+ 	cmp ../examples/ccitt1.jbg test-ccitt1.jbg
+-	rm -f test-*.jbg test-*.pbm test-*.pgm
++	rm -f test-ccitt1.jbg test-ccitt1.pbm
+ 	./jbgtopbm ../examples/ccitt1.jbg test-ccitt1.pbm ; \
+ 	  ./pbmtojbg test-ccitt1.pbm >test-ccitt1.jbg
+ 	cmp ../examples/ccitt1.jbg test-ccitt1.jbg
+-	rm -f test-*.jbg test-*.pbm test-*.pgm
++	rm -f test-ccitt1.jbg test-ccitt1.pbm
+ 	@echo
+ 	@echo "The pbmtools have PASSED the functional tests. Good!"
+ 	@echo
+@@ -110,34 +110,36 @@
+ 	make IMG=ccitt1 dotest85
+ 	make IMG=ccitt2 dotest85
+ 	make IMG=ccitt3 dotest85
+-	rm -f test-*.jbg test-*.jbg85 test-*.pbm
+ 	@echo
+ 	@echo "The T.85 pbmtools have PASSED the functional tests. Good!"
+ 	@echo
+ 
++# Workaround for dotest85{,b}
++ANTI_TAP_DANCE ::= $(shell mktemp -u XXXXXXXX)
++
+ dotest85: test-$(IMG).pbm
+-	./pbmtojbg85  $(OPTIONSP) test-$(IMG).pbm test-$(IMG).jbg85
+-	ls -l test-$(IMG).jbg85
+-	./jbgtopbm test-$(IMG).jbg85 test-$(IMG).pbm85
+-	cmp test-$(IMG).pbm test-$(IMG).pbm85
+-	rm test-$(IMG).pbm85
+-	./jbgtopbm85 test-$(IMG).jbg85 test-$(IMG).pbm85
+-	cmp test-$(IMG).pbm test-$(IMG).pbm85
+-	rm test-$(IMG).pbm85
+-	./jbgtopbm85 -B 1 test-$(IMG).jbg85 test-$(IMG).pbm85
+-	cmp test-$(IMG).pbm test-$(IMG).pbm85
++	./pbmtojbg85  $(OPTIONSP) test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).jbg85
++	ls -l test-$(IMG)-$(ANTI_TAP_DANCE).jbg85
++	./jbgtopbm test-$(IMG)-$(ANTI_TAP_DANCE).jbg85 test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	cmp test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	rm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	./jbgtopbm85 test-$(IMG)-$(ANTI_TAP_DANCE).jbg85 test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	cmp test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	rm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	./jbgtopbm85 -B 1 test-$(IMG)-$(ANTI_TAP_DANCE).jbg85 test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	cmp test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
+ 
+ dotest85b: test-$(IMG).pbm
+-	./pbmtojbg -f $(OPTIONSP) test-$(IMG).pbm test-$(IMG).jbg85
+-	ls -l test-$(IMG).jbg85
+-	./jbgtopbm test-$(IMG).jbg85 test-$(IMG).pbm85
+-	cmp test-$(IMG).pbm test-$(IMG).pbm85
+-	rm test-$(IMG).pbm85
+-	./jbgtopbm85 test-$(IMG).jbg85 test-$(IMG).pbm85
+-	cmp test-$(IMG).pbm test-$(IMG).pbm85
+-	rm test-$(IMG).pbm85
+-	./jbgtopbm85 -B 1 test-$(IMG).jbg85 test-$(IMG).pbm85
+-	cmp test-$(IMG).pbm test-$(IMG).pbm85
++	./pbmtojbg -f $(OPTIONSP) test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).jbg85
++	ls -l test-$(IMG)-$(ANTI_TAP_DANCE).jbg85
++	./jbgtopbm test-$(IMG)-$(ANTI_TAP_DANCE).jbg85 test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	cmp test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	rm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	./jbgtopbm85 test-$(IMG)-$(ANTI_TAP_DANCE).jbg85 test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	cmp test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	rm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	./jbgtopbm85 -B 1 test-$(IMG)-$(ANTI_TAP_DANCE).jbg85 test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
++	cmp test-$(IMG).pbm test-$(IMG)-$(ANTI_TAP_DANCE).pbm85
+ 
+ test-%.pbm: ../examples/%.jbg
+ 	./jbgtopbm $< $@

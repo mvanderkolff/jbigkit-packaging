@@ -5,3 +5,4 @@ manpageTypo.diff
 shared-lib.diff
 ld-library-path.diff
 debbug-969593.diff
+fixup-testsuite.diff
