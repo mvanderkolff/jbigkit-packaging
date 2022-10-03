@@ -1,0 +1,20 @@
+Author: Markus Kuhn <Markus.Kuhn@cl.cam.ac.uk>
+Date:   Mon Feb 15 18:27:47 2021 +0000
+
+    jbg_newlen(): check for end-of-file within MARKER_NEWLEN
+    
+    fixes https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=969593
+    reported by Casper Sun
+--- a/libjbig/jbig.c
++++ b/libjbig/jbig.c
+@@ -3267,7 +3267,9 @@
+     else if (p[0] == MARKER_ESC)
+       switch (p[1]) {
+       case MARKER_NEWLEN:
+-	y = (((long) bie[ 8] << 24) | ((long) bie[ 9] << 16) |
++	if (p + 5 >= bie + len)
++          return JBG_EAGAIN;
++        y = (((long) bie[ 8] << 24) | ((long) bie[ 9] << 16) |
+ 	     ((long) bie[10] <<  8) |  (long) bie[11]);
+ 	yn = (((long) p[2] << 24) | ((long) p[3] << 16) |
+ 	      ((long) p[4] <<  8) |  (long) p[5]);
