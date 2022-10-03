@@ -10,9 +10,6 @@ pkg_run = jbigkit-bin
 override_dh_installman:
 	dh_installman -p$(pkg_run) debian/jbgtopbm85.1 debian/pbmtojbg85.1
 
-# Disable dh_missing (libjbig.a is generated, but we don't package static libraries)
-override_dh_missing:
-
 debian/jbgtopbm85.1:
 	help2man -n "reads a bi-level image entity (BIE) as input file" \
 		--no-discard-stderr --output=debian/jbgtopbm85.1 --no-info jbgtopbm85
