@@ -1,4 +1,4 @@
-PBMTOJBG(1)                                                        PBMTOJBG(1)
+PBMTOJBG(1)                 General Commands Manual                PBMTOJBG(1)
 
 
 
@@ -72,8 +72,8 @@ OPTIONS
                      ers  into which the input image will be split in addition
                      to the lowest layer. Each additional  layer  reduces  the
                      size of layer 0 by 50 %. This option overrides options -x
-                     and -y which  are  usually  a  more  comfortable  way  of
-                     selecting the number of resolution layers.
+                     and -y which are usually a more comfortable  way  of  se-
+                     lecting the number of resolution layers.
 
        -s number     The  JBIG1  algorithm  splits each image into a number of
                      horizontal  stripes.  This  option  specifies  that  each
@@ -101,7 +101,7 @@ OPTIONS
                      adaptive template pixel is always zero for this encoder.)
 
        -t number     Encode only the specified number of most significant  bit
-                     planes.  This  option  allows  to  reduce the depth of an
+                     planes.  This option allows one to reduce the depth of an
                      input PGM file if not all bits per pixel  are  needed  in
                      the output.
 
@@ -109,17 +109,17 @@ OPTIONS
                      resolution layers and planes, were  each  plane  contains
                      one  bit  per  pixel.  One single stripe in one plane and
                      layer is encoded as a data unit called stripe data entity
-                     (SDE)  inside  the  BIE.  There are 12 different possible
-                     orders in which the SDEs can be stored inside the BIE and
+                     (SDE) inside the BIE. There are 12 different possible or-
+                     ders in which the SDEs can be stored inside the  BIE  and
                      number  selects which one shall be used. The order of the
-                     SDEs is only  relevant  for  applications  that  want  to
-                     decode  a JBIG1 file which has not yet completely arrived
+                     SDEs is only relevant for applications that want  to  de-
+                     code  a  JBIG1  file which has not yet completely arrived
                      from e.g. a slow network connection.  For  instance  some
                      applications prefer that the outermost of the three loops
                      (stripes, layers, planes) is over all layers so that  all
                      data of the lowest resolution layer is transmitted first.
-                     The   following  values  for  number  select  these  loop
-                     arrangements for writing the SDEs (outermost loop first):
+                     The  following  values  for  number select these loop ar-
+                     rangements for writing the SDEs (outermost loop first):
 
                         0      planes, layers, stripes
                         2      layers, planes, stripes
@@ -136,7 +136,7 @@ OPTIONS
                      and  then  completes  layer  0 before continuing with the
                      next layer and so on.
 
-       -p number     This option allows  to  activate  or  deactivate  various
+       -p number     This option allows one to activate or deactivate  various
                      optional  algorithms  defined in the JBIG1 standard. Just
                      add the numbers of the following options which  you  want
                      to activate in order to get the number value:
@@ -149,8 +149,8 @@ OPTIONS
                      Except  for special applications (like communication with
                      JBIG1 subset implementations) and for debugging  purposes
                      you  will  normally not want to change anything here. The
-                     default  is  28,  which  provides  the  best  compression
-                     result.
+                     default is 28, which provides the  best  compression  re-
+                     sult.
 
        -C string     Add  the  string  in a comment marker segment to the pro-
                      duced data stream. (There is no support  at  present  for
@@ -179,8 +179,8 @@ OPTIONS
        -Y number     A  long  time  ago, there were fax machines that couldn't
                      even hold a single page in  memory.  They  had  to  start
                      transmitting  data  before  the  page was scanned in com-
-                     pletely and the length  of  the  image  was  known.   The
-                     authors  of  the standard added a rather ugly hack to the
+                     pletely and the length of the image was known.   The  au-
+                     thors  of  the  standard  added a rather ugly hack to the
                      otherwise beautiful JBIG1 format  to  support  this.  The
                      NEWLEN  marker  segment  can  override  the  image height
                      stated in the BIE  header  anywhere  later  in  the  data
@@ -188,11 +188,11 @@ OPTIONS
                      segments, as it knows the correct image  height  when  it
                      outputs  the  header.  This option is solely intended for
                      the purpose of generating test files with  NEWLEN  marker
-                     segments.  It  can  be  used  to specify a higher initial
-                     image height for use in the BIE header, and pbmtojbg will
+                     segments.  It can be used to specify a higher initial im-
+                     age height for use in the BIE header, and  pbmtojbg  will
                      then  add  a NEWLEN marker segment at the latest possible
-                     opportunity to the data  stream  to  signal  the  correct
-                     final height.
+                     opportunity to the data stream to signal the correct  fi-
+                     nal height.
 
        -f            This  option makes the output file comply to the "facsim-
                      ile application profile" defined in ITU-T  Recommendation
@@ -206,8 +206,8 @@ BUGS
        Using  standard input and standard output for binary data works only on
        systems where there is no difference between binary  and  text  streams
        (e.g.,  Unix). On other systems (e.g., MS-DOS), using standard input or
-       standard output may cause control  characters  like  CR  or  LF  to  be
-       inserted or deleted and this will damage the binary data.
+       standard output may cause control characters like CR or LF  to  be  in-
+       serted or deleted and this will damage the binary data.
 
 STANDARDS
        This  program  implements the JBIG1 image coding algorithm as specified
