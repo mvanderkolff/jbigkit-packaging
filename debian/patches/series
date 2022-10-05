@@ -1,8 +1,5 @@
-allNewMainMakefile.diff
-pbmtoolsMakefile.diff
 unusedResultPedantry.diff
 manpageTypo.diff
-shared-lib.diff
-ld-library-path.diff
 debbug-969593.diff
 fixup-testsuite.diff
+improve-upstream-Makefiles.diff
