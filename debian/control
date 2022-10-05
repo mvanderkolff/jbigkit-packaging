@@ -7,6 +7,7 @@ Section: libs
 Homepage: http://www.cl.cam.ac.uk/~mgk25/jbigkit/
 Vcs-Git: https://github.com/mvanderkolff/jbigkit-packaging.git
 Vcs-Browser: https://github.com/mvanderkolff/jbigkit-packaging
+Rules-Requires-Root: no
 
 Package: jbigkit-bin
 Section: graphics
