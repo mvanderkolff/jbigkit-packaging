@@ -1,6 +1,7 @@
-jbigkit (2.1-6) UNRELEASED; urgency=medium
+jbigkit (2.1-6) unstable; urgency=medium
 
   * Create testdata package
+  * Add unit test
 
  -- Michael van der Kolff <mvanderkolff@gmail.com>  Fri, 07 Oct 2022 21:55:00 +1100
 
