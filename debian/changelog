@@ -1,4 +1,4 @@
-jbigkit (2.1-5) UNRELEASED; urgency=medium
+jbigkit (2.1-5) unstable; urgency=medium
 
   [ Michael van der Kolff ]
   * Bump Compat to 13
