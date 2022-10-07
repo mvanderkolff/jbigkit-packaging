@@ -1,4 +1,5 @@
 libjbig.so.0 libjbig0 #MINVER#
+* Build-Depends-Package: libjbig-dev
  arith_decode@Base 2.0
  arith_decode_init@Base 2.0
  arith_encode@Base 2.0

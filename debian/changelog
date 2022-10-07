@@ -1,7 +1,14 @@
 jbigkit (2.1-5) UNRELEASED; urgency=medium
 
+  [ Michael van der Kolff ]
   * Bump Compat to 13
   * Suppressed dh_missing (for static libraries)
+
+  [ Christian Göttsche ]
+  * Enable hardening flags and update Makefile patches to propagate them
+  * misc Lintian cleanup
+
+ -- Christian Göttsche <cgzones@googlemail.com>  Wed, 05 Oct 2022 20:01:53 +0200
 
 jbigkit (2.1-4) unstable; urgency=medium
 
