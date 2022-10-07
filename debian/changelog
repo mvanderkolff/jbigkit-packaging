@@ -1,8 +1,8 @@
 jbigkit (2.1-6) UNRELEASED; urgency=medium
 
- * Create testdata package
+  * Create testdata package
 
- --Michael van der Kolff <mvanderkolff@gmail.com> Fri, 07 Oct 2022 21:55:00 +1100
+ -- Michael van der Kolff <mvanderkolff@gmail.com>  Fri, 07 Oct 2022 21:55:00 +1100
 
 jbigkit (2.1-5) unstable; urgency=medium
 
