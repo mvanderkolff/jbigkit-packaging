@@ -2,7 +2,7 @@ Source: jbigkit
 Priority: optional
 Maintainer: Michael van der Kolff <mvanderkolff@gmail.com>
 Build-Depends: debhelper-compat (= 13)
-Standards-Version: 4.5.1
+Standards-Version: 4.6.1
 Section: libs
 Homepage: http://www.cl.cam.ac.uk/~mgk25/jbigkit/
 Vcs-Git: https://github.com/mvanderkolff/jbigkit-packaging.git

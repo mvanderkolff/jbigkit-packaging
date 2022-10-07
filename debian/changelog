@@ -2,6 +2,7 @@ jbigkit (2.1-5) UNRELEASED; urgency=medium
 
   [ Michael van der Kolff ]
   * Bump Compat to 13
+  * Really update Std-Vers to 4.6.1 (it seems I typoed 4.5.1...)
 
   [ Christian Göttsche ]
   * Enable hardening flags and update Makefile patches to propagate them
