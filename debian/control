@@ -21,6 +21,16 @@ Description: JBIGkit binaries
  .
  This package contains the binaries from JBIG-KIT.
 
+Package: jbigkit-testdata
+Section: graphics
+Architecture: any
+Description: JBIGkit testdata
+ JBIG-KIT provides a portable library of compression and decompression functions
+ with a documented interface that you can include very easily into your image or
+ document processing software.
+ .
+ This package contains the testdata included with JBIG-KIT.
+
 Package: libjbig-dev
 Section: libdevel
 Architecture: any

@@ -3,3 +3,4 @@ manpageTypo.diff
 debbug-969593.diff
 fixup-testsuite.diff
 improve-upstream-Makefiles.diff
+create-testdata.diff

@@ -1,0 +1,27 @@
+--- a/Makefile
++++ b/Makefile
+@@ -12,7 +12,7 @@
+ VERSION=2.1
+ .PHONY: all lib pbm test clean install
+ 
+-all: lib pbm
++all: lib pbm testdata
+ 	@echo "Enter 'make test' in order to start some automatic tests."
+ 
+ lib:
+@@ -25,6 +25,9 @@
+ 	cd libjbig  && $(MAKE) test
+ 	cd pbmtools && $(MAKE) test
+ 
++testdata:
++	cd pbmtools && $(MAKE) test-t82.pbm
++
+ analyze:
+ 	cd libjbig  && $(MAKE) analyze
+ 	cd pbmtools && $(MAKE) analyze
+@@ -55,3 +58,5 @@
+ 	install -m 755 pbmtools/jbgtopbm pbmtools/jbgtopbm85 pbmtools/pbmtojbg pbmtools/pbmtojbg85 $(DESTDIR)/usr/bin
+ 	install -d $(DESTDIR)/usr/share/man/man1
+ 	install -m 644 pbmtools/*.1 $(DESTDIR)/usr/share/man/man1
++	install -d $(DESTDIR)/usr/share/jbigkit-testdata
++	install -m 644 examples/*.pgm examples/*.jbg pbmtools/test-t82.pbm $(DESTDIR)/usr/share/jbigkit-testdata
