@@ -1,0 +1,118 @@
+# Unix makefile for the JBIG-KIT integration test suite
+
+EXAMPLES ?= /usr/share/jbigkit-testdata
+
+PBMTOJBG ?= pbmtojbg
+PBMTOJBG85 ?= pbmtojbg85
+JBGTOPBM ?= jbgtopbm
+JBGTOPBM85 ?= jbgtopbm85
+
+.PHONY: txt test test82 test85 clean
+
+test: test82 test85
+
+test82:
+	$(MAKE) -f unittests-Makefile IMG=ccitt1     OPTIONSP=                      dotest1
+	$(MAKE) -f unittests-Makefile IMG=ccitt2     OPTIONSP=                      dotest1
+	$(MAKE) -f unittests-Makefile IMG=ccitt3     OPTIONSP=                      dotest1
+	$(MAKE) -f unittests-Makefile IMG=xvlogo    "OPTIONSP=-d 3"                 dotest1
+	$(MAKE) -f unittests-Makefile IMG=sandra     OPTIONSP=      OPTIONSJ=       dotest2g
+	$(MAKE) -f unittests-Makefile IMG=sandra     OPTIONSP=-b    OPTIONSJ=-b     dotest2g
+	$(MAKE) -f unittests-Makefile IMG=sandra     OPTIONSP=-q    OPTIONSJ=       dotest2g
+	$(MAKE) -f unittests-Makefile IMG=sandra    "OPTIONSP=-o 0" OPTIONSJ=       dotest2g
+	$(MAKE) -f unittests-Makefile IMG=sandra    "OPTIONSP=-o 2" OPTIONSJ=       dotest2g
+	$(MAKE) -f unittests-Makefile IMG=multi      OPTIONSP=      OPTIONSJ=       dotest2g
+	$(MAKE) -f unittests-Makefile IMG=multi      OPTIONSP=-b    OPTIONSJ=-b     dotest2g
+	$(MAKE) -f unittests-Makefile IMG=mx        "OPTIONSP=-q -s 3 -m 128"       dotest1
+	$(MAKE) -f unittests-Makefile IMG=mx        "OPTIONSP=-q -s 3 -m 128"       dotest2b
+	$(MAKE) -f unittests-Makefile IMG=mx        "OPTIONSP=-q -s 3 -m 128 -p 92" dotest2b
+	$(MAKE) -f unittests-Makefile IMG=mx        "OPTIONSP=-q -Y -1"             dotest2b
+	$(MAKE) -f unittests-Makefile IMG=mx        "OPTIONSP=-Y -1"                dotest2b
+	rm -f test-*.jbg test-*.pbm test-*.pgm
+	$(JBGTOPBM) $(EXAMPLES)/ccitt1.jbg | $(PBMTOJBG) > test-ccitt1.jbg
+	cmp $(EXAMPLES)/ccitt1.jbg test-ccitt1.jbg
+	rm -f test-*.jbg test-*.pbm test-*.pgm
+	$(JBGTOPBM) < $(EXAMPLES)/ccitt1.jbg | $(PBMTOJBG) - test-ccitt1.jbg
+	cmp $(EXAMPLES)/ccitt1.jbg test-ccitt1.jbg
+	rm -f test-*.jbg test-*.pbm test-*.pgm
+	$(JBGTOPBM) < $(EXAMPLES)/ccitt1.jbg - test-ccitt1.pbm ; \
+	  $(PBMTOJBG) test-ccitt1.pbm test-ccitt1.jbg
+	cmp $(EXAMPLES)/ccitt1.jbg test-ccitt1.jbg
+	rm -f test-*.jbg test-*.pbm test-*.pgm
+	$(JBGTOPBM) $(EXAMPLES)/ccitt1.jbg test-ccitt1.pbm ; \
+	  $(PBMTOJBG) test-ccitt1.pbm >test-ccitt1.jbg
+	cmp $(EXAMPLES)/ccitt1.jbg test-ccitt1.jbg
+	rm -f test-*.jbg test-*.pbm test-*.pgm
+	@echo
+	@echo "The pbmtools have PASSED the functional tests. Good!"
+	@echo
+
+dotest1:
+	$(JBGTOPBM) $(EXAMPLES)/$(IMG).jbg test-$(IMG).pbm
+	$(PBMTOJBG) $(OPTIONSP) test-$(IMG).pbm test-$(IMG).jbg
+	cmp test-$(IMG).jbg $(EXAMPLES)/$(IMG).jbg
+
+dotest2b:
+	$(PBMTOJBG) $(OPTIONSP) test-$(IMG).pbm test-$(IMG).jbg
+	$(JBGTOPBM) $(OPTIONSJ) test-$(IMG).jbg test-$(IMG)-2.pbm
+	cmp test-$(IMG).pbm test-$(IMG)-2.pbm
+
+dotest2g:
+	$(PBMTOJBG) $(OPTIONSP) $(EXAMPLES)/$(IMG).pgm test-$(IMG).jbg
+	$(JBGTOPBM) $(OPTIONSJ) test-$(IMG).jbg test-$(IMG).pgm
+	cmp test-$(IMG).pgm $(EXAMPLES)/$(IMG).pgm
+
+test85: test-t82.pbm
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-p 0"      dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-p 8"      dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-p 8 -r"   dotest85b
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-p 64"     dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-p 72"     dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-s 2 -C c" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-s 99999"  dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y 9999 0" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y 1951 0" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y -1 127" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y -1 128" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y -1 1919" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y -1 1920" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y -1 1949" dotest85
+	$(MAKE) -f unittests-Makefile IMG=t82 "OPTIONSP=-Y -1 1950" dotest85
+	$(MAKE) -f unittests-Makefile IMG=ccitt1 dotest85
+	$(MAKE) -f unittests-Makefile IMG=ccitt2 dotest85
+	$(MAKE) -f unittests-Makefile IMG=ccitt3 dotest85
+	rm -f test-*.jbg test-*.jbg85 test-*.pbm
+	@echo
+	@echo "The T.85 pbmtools have PASSED the functional tests. Good!"
+	@echo
+
+dotest85: test-$(IMG).pbm
+	$(PBMTOJBG)85  $(OPTIONSP) test-$(IMG).pbm test-$(IMG).jbg85
+	ls -l test-$(IMG).jbg85
+	$(JBGTOPBM) test-$(IMG).jbg85 test-$(IMG).pbm85
+	cmp test-$(IMG).pbm test-$(IMG).pbm85
+	rm test-$(IMG).pbm85
+	$(JBGTOPBM85) test-$(IMG).jbg85 test-$(IMG).pbm85
+	cmp test-$(IMG).pbm test-$(IMG).pbm85
+	rm test-$(IMG).pbm85
+	$(JBGTOPBM85) -B 1 test-$(IMG).jbg85 test-$(IMG).pbm85
+	cmp test-$(IMG).pbm test-$(IMG).pbm85
+
+dotest85b: test-$(IMG).pbm
+	$(PBMTOJBG) -f $(OPTIONSP) test-$(IMG).pbm test-$(IMG).jbg85
+	ls -l test-$(IMG).jbg85
+	$(JBGTOPBM) test-$(IMG).jbg85 test-$(IMG).pbm85
+	cmp test-$(IMG).pbm test-$(IMG).pbm85
+	rm test-$(IMG).pbm85
+	$(JBGTOPBM85) test-$(IMG).jbg85 test-$(IMG).pbm85
+	cmp test-$(IMG).pbm test-$(IMG).pbm85
+	rm test-$(IMG).pbm85
+	$(JBGTOPBM85) -B 1 test-$(IMG).jbg85 test-$(IMG).pbm85
+	cmp test-$(IMG).pbm test-$(IMG).pbm85
+
+test-%.pbm: $(EXAMPLES)/%.jbg
+	$(JBGTOPBM) $< $@
+
+test-t82.pbm: $(EXAMPLES)/test-t82.pbm
+	ln -s $< $@
+

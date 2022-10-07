@@ -1,0 +1,4 @@
+#!/bin/sh
+
+make -f unittests-Makefile -j1 test
+exit $?

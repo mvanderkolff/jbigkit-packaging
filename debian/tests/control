@@ -1,0 +1,4 @@
+Tests: run-unit-test
+Depends: @
+Restrictions: allow-stderr
+
