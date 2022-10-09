@@ -1,6 +1,6 @@
 jbigkit (2.1-7) UNRELEASED; urgency=medium
 
-  * Fix up PIC release code which seems to render this unbuildable on ppc, hppa, and produces issues on mips(el).
+  * Fix up PIC release code which seems to render this unbuildable on ppc, hppa, and produces issues on mips(el)
 
  -- Michael van der Kolff <mvanderkolff@gmail.com>  Sun 09 Oct 2022 16:36:00 +1100
 
