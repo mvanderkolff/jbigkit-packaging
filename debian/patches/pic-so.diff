@@ -1,0 +1,39 @@
+--- a/libjbig/Makefile
++++ b/libjbig/Makefile
+@@ -5,6 +5,7 @@
+ 
+ # Options for the compiler: A high optimization level is suggested
+ CFLAGS ?= -g -O -W -Wall -ansi -pedantic # --coverage
++CFLAGS_PIC ?= -fPIC
+ 
+ all: libjbig.a libjbig.so libjbig85.a tstcodec tstcodec85
+ 
+@@ -18,7 +19,7 @@
+ 	rm -f libjbig.a
+ 	$(AR) rcs $@ jbig.o jbig_ar.o
+ 
+-libjbig.so: jbig.o jbig_ar.o jbig85.o
++libjbig.so: jbig.pic.o jbig_ar.pic.o jbig85.pic.o
+ 	$(CC) -shared -Wl,-soname,libjbig.so.0 -o libjbig.so.0 $+ $(LDFLAGS)
+ 	ln -sf libjbig.so.0 libjbig.so
+ 
+@@ -26,9 +27,9 @@
+ 	rm -f libjbig85.a
+ 	$(AR) rcs $@ jbig85.o jbig_ar.o
+ 
+-jbig.o: jbig.c jbig.h jbig_ar.h
+-jbig85.o: jbig85.c jbig85.h jbig_ar.h
+-jbig_ar.o: jbig_ar.c jbig_ar.h
++jbig.o jbig.pic.o: jbig.c jbig.h jbig_ar.h
++jbig85.o jbig85.pic.o: jbig85.c jbig85.h jbig_ar.h
++jbig_ar.o jbig_ar.pic.o: jbig_ar.c jbig_ar.h
+ tstcodec.o: tstcodec.c jbig.h
+ tstcodec85.o: tstcodec85.c jbig85.h
+ 
+@@ -56,3 +57,6 @@
+ 	rm -f *.so* *.a *.la
+ 	rm -f t82test.pbm
+ 	rm -f tstcodec tstcodec85
++
++%.pic.o : %.c
++	$(CC) -c $(CFLAGS) $(CFLAGS_PIC) $< -o $@ $(LDFLAGS)
