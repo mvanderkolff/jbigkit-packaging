@@ -5,3 +5,4 @@ fixup-testsuite.diff
 improve-upstream-Makefiles.diff
 create-testdata.diff
 pic-so.diff
+close-testsuite-memory-leaks.diff

@@ -1,0 +1,173 @@
+From: =?utf-8?q?Christian_G=C3=B6ttsche_=3CChristian_G=C3=B6ttsche_cgzones?=
+ =?utf-8?q?=40googlemail=2Ecom=3E?=
+Date: Mon, 10 Oct 2022 15:17:48 +0200
+Subject: Free misc memory leaks in testsuite
+
+---
+ libjbig/tstcodec.c    | 6 ++++--
+ libjbig/tstcodec85.c  | 7 +++++--
+ pbmtools/jbgtopbm.c   | 1 +
+ pbmtools/jbgtopbm85.c | 3 +++
+ pbmtools/pbmtojbg.c   | 4 ++++
+ pbmtools/pbmtojbg85.c | 2 ++
+ 6 files changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/libjbig/tstcodec.c b/libjbig/tstcodec.c
+index 9ba09cd..f0b4e65 100644
+--- a/libjbig/tstcodec.c
++++ b/libjbig/tstcodec.c
+@@ -317,8 +317,6 @@ int main(int argc, char **argv)
+   /* allocate test buffer memory */
+   testbuf = (unsigned char *) checkedmalloc(TESTBUF_SIZE);
+   testpic = (unsigned char *) checkedmalloc(TESTPIC_SIZE);
+-  se = (struct jbg_arenc_state *) checkedmalloc(sizeof(struct jbg_arenc_state));
+-  sd = (struct jbg_ardec_state *) checkedmalloc(sizeof(struct jbg_ardec_state));
+ 
+   /* test a few properties of the machine architecture */
+   testbuf[0] = 42;
+@@ -365,6 +363,7 @@ int main(int argc, char **argv)
+ #if 1
+   puts("1) Arithmetic encoder test sequence from ITU-T T.82, clause 7.1\n"
+        "---------------------------------------------------------------\n");
++  se = (struct jbg_arenc_state *) checkedmalloc(sizeof(struct jbg_arenc_state));
+   arith_encode_init(se, 0);
+   testbuf_len = 0;
+   se->byte_out = testbuf_write;
+@@ -372,6 +371,7 @@ int main(int argc, char **argv)
+     arith_encode(se, (t82cx[i >> 4] >> ((15 - i) & 15)) & 1,
+ 		 (t82pix[i >> 4] >> ((15 - i) & 15)) & 1);
+   arith_encode_flush(se);
++  free(se);
+   printf("result of encoder:\n  ");
+   for (i = 0; i < testbuf_len && i < TESTBUF_SIZE; i++)
+     printf("%02x", testbuf[i]);
+@@ -390,6 +390,7 @@ int main(int argc, char **argv)
+   puts("2) Arithmetic decoder test sequence from ITU-T T.82, clause 7.1\n"
+        "---------------------------------------------------------------\n");
+   printf("Test 2.1: Decoding whole chunk ...\n");
++  sd = (struct jbg_ardec_state *) checkedmalloc(sizeof(struct jbg_ardec_state));
+   arith_decode_init(sd, 0);
+   sd->pscd_ptr = t82sde;
+   sd->pscd_end = t82sde + 32;
+@@ -453,6 +454,7 @@ int main(int argc, char **argv)
+ 	   (long) (sd->pscd_end - sd->pscd_ptr - 2));
+     trouble++;
+   }
++  free(sd);
+   printf("Test result: ");
+   if (trouble) {
+     problems++;
+diff --git a/libjbig/tstcodec85.c b/libjbig/tstcodec85.c
+index 1a9d95e..a747240 100644
+--- a/libjbig/tstcodec85.c
++++ b/libjbig/tstcodec85.c
+@@ -235,6 +235,7 @@ static int test_cycle(unsigned char *orig_image, int width, int height,
+ 	puts(PASSED);
+     }
+   }
++  free(buffer);
+   free(image);
+ 
+ #endif
+@@ -276,8 +277,6 @@ int main(int argc, char **argv)
+   /* allocate test buffer memory */
+   testbuf = (unsigned char *) checkedmalloc(TESTBUF_SIZE);
+   testpic = (unsigned char *) checkedmalloc(TESTPIC_SIZE);
+-  se = (struct jbg_arenc_state *) checkedmalloc(sizeof(struct jbg_arenc_state));
+-  sd = (struct jbg_ardec_state *) checkedmalloc(sizeof(struct jbg_ardec_state));
+ 
+   /* only supported command line option:
+    * output file name for exporting test image */
+@@ -304,6 +303,7 @@ int main(int argc, char **argv)
+ #if 1
+   puts("1) Arithmetic encoder test sequence from ITU-T T.82, clause 7.1\n"
+        "---------------------------------------------------------------\n");
++  se = (struct jbg_arenc_state *) checkedmalloc(sizeof(struct jbg_arenc_state));
+   arith_encode_init(se, 0);
+   testbuf_len = 0;
+   se->byte_out = testbuf_write;
+@@ -311,6 +311,7 @@ int main(int argc, char **argv)
+     arith_encode(se, (t82cx[i >> 4] >> ((15 - i) & 15)) & 1,
+ 		 (t82pix[i >> 4] >> ((15 - i) & 15)) & 1);
+   arith_encode_flush(se);
++  free(se);
+   printf("result of encoder:\n  ");
+   for (i = 0; i < testbuf_len && i < TESTBUF_SIZE; i++)
+     printf("%02x", testbuf[i]);
+@@ -329,6 +330,7 @@ int main(int argc, char **argv)
+   puts("2) Arithmetic decoder test sequence from ITU-T T.82, clause 7.1\n"
+        "---------------------------------------------------------------\n");
+   printf("Test 2.1: Decoding whole chunk ...\n");
++  sd = (struct jbg_ardec_state *) checkedmalloc(sizeof(struct jbg_ardec_state));
+   arith_decode_init(sd, 0);
+   sd->pscd_ptr = t82sde;
+   sd->pscd_end = t82sde + 32;
+@@ -392,6 +394,7 @@ int main(int argc, char **argv)
+ 	   (long) (sd->pscd_end - sd->pscd_ptr - 2));
+     trouble++;
+   }
++  free(sd);
+   printf("Test result: ");
+   if (trouble) {
+     problems++;
+diff --git a/pbmtools/jbgtopbm.c b/pbmtools/jbgtopbm.c
+index a6a8c78..b676826 100644
+--- a/pbmtools/jbgtopbm.c
++++ b/pbmtools/jbgtopbm.c
+@@ -423,6 +423,7 @@ int main (int argc, char **argv)
+       exit(1);
+     }
+   }
++  free(buffer);
+   if (result != JBG_EOK && result != JBG_EOK_INTR) {
+     fprintf(stderr, "Problem with input file '%s': %s\n"
+             "(error code 0x%02x, %lu = 0x%04lx BIE bytes processed)\n",
+diff --git a/pbmtools/jbgtopbm85.c b/pbmtools/jbgtopbm85.c
+index 9bce587..ad97e7d 100644
+--- a/pbmtools/jbgtopbm85.c
++++ b/pbmtools/jbgtopbm85.c
+@@ -150,6 +150,7 @@ int main (int argc, char **argv)
+     if (result != JBG_EAGAIN)
+       break;
+   }
++  free(inbuf);
+   if (ferror(fin)) {
+     fprintf(stderr, "Problem while reading input file '%s", fnin);
+     perror("'");
+@@ -194,6 +195,8 @@ int main (int argc, char **argv)
+     }
+   }
+ 
++  free(outbuf);
++
+   /* check for file errors and close fout */
+   if (ferror(fout) || fclose(fout)) {
+     fprintf(stderr, "Problem while writing output file '%s", fnout);
+diff --git a/pbmtools/pbmtojbg.c b/pbmtools/pbmtojbg.c
+index 6c74430..fe162fb 100644
+--- a/pbmtools/pbmtojbg.c
++++ b/pbmtools/pbmtojbg.c
+@@ -400,6 +400,10 @@ int main (int argc, char **argv)
+   /* give encoder a chance to free its temporary data structures */
+   jbg_enc_free(&s);
+ 
++  for (i = 0; i < encode_planes; i++)
++    free(bitmap[i]);
++  free(bitmap);
++
+   /* check for file errors and close fout */
+   if (ferror(fout) || fclose(fout)) {
+     fprintf(stderr, "Problem while writing output file '%s", fnout);
+diff --git a/pbmtools/pbmtojbg85.c b/pbmtools/pbmtojbg85.c
+index d91c1d1..3a0f196 100644
+--- a/pbmtools/pbmtojbg85.c
++++ b/pbmtools/pbmtojbg85.c
+@@ -269,6 +269,8 @@ int main (int argc, char **argv)
+       jbg85_enc_newlen(&s, height);
+   }
+ 
++  free(lines);
++
+   /* check for file errors and close fout */
+   if (ferror(fout) || fclose(fout)) {
+     fprintf(stderr, "Problem while writing output file '%s", fnout);
